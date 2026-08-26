@@ -60,6 +60,10 @@ export interface AppState {
   // Fly-to target coordinate trigger
   flyToTrigger: { lng: number; lat: number; zoom?: number; timestamp: number } | null;
 
+  // Live Map Viewport (Zoom & Center)
+  mapZoom: number;
+  mapCenter: { lng: number; lat: number };
+
   // Actions
   initFromStorage: () => Promise<void>;
   addDataset: (dataset: SpatialDataset) => void;
@@ -95,6 +99,7 @@ export interface AppState {
   setBasemap: (style: BasemapKey) => void;
   setTheme: (theme: 'dark' | 'light') => void;
   setCursorCoordinates: (coords: { lng: number; lat: number } | null) => void;
+  setMapViewport: (zoom: number, center: { lng: number; lat: number }) => void;
   triggerFlyTo: (lng: number, lat: number, zoom?: number) => void;
 
   loadDemoDataset: () => Promise<void>;
@@ -126,6 +131,8 @@ export const useAppStore = create<AppState>((set, get) => ({
   labelFieldOverride: null,
   cursorCoordinates: null,
   flyToTrigger: null,
+  mapZoom: 15,
+  mapCenter: { lng: 91.7905, lat: 22.4608 },
 
   initFromStorage: async () => {
     if (get().isInitialized) return;
@@ -339,6 +346,7 @@ export const useAppStore = create<AppState>((set, get) => ({
   },
 
   setCursorCoordinates: (coords) => set({ cursorCoordinates: coords }),
+  setMapViewport: (zoom, center) => set({ mapZoom: zoom, mapCenter: center }),
 
   triggerFlyTo: (lng, lat, zoom = 16) => {
     set({ flyToTrigger: { lng, lat, zoom, timestamp: Date.now() } });

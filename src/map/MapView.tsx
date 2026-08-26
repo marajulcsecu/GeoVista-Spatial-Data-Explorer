@@ -5,6 +5,7 @@ import { useAppStore } from '../app/store';
 import { getBasemapStyle } from './mapStyles';
 import { createDatasetLayerSpecs } from './mapLayers';
 import { formatDistance, formatArea } from './measurements';
+import { ScaleWidget } from '../components/tools/ScaleWidget';
 import type { SpatialDataset, SelectedFeatureRef } from '../types/spatial';
 
 export const MapView: FC = () => {
@@ -23,6 +24,7 @@ export const MapView: FC = () => {
     flyToTrigger,
     selectFeature,
     setCursorCoordinates,
+    setMapViewport,
     addMeasurementPoint,
     finishMeasurement
   } = useAppStore();
@@ -180,16 +182,22 @@ export const MapView: FC = () => {
 
     // Add navigation controls (zoom, compass)
     map.addControl(new maplibregl.NavigationControl({ showCompass: true }), 'top-right');
-    map.addControl(new maplibregl.ScaleControl({ unit: 'metric' }), 'bottom-left');
+
+    // Synchronize live viewport zoom and center
+    const handleViewportUpdate = () => {
+      setMapViewport(map.getZoom(), { lng: map.getCenter().lng, lat: map.getCenter().lat });
+    };
 
     // Automatic re-sync whenever style loads, changes, or becomes idle
     const handleStyleUpdate = () => {
       syncLayersToMap();
+      handleViewportUpdate();
     };
 
     map.on('load', handleStyleUpdate);
     map.on('styledata', handleStyleUpdate);
     map.on('idle', handleStyleUpdate);
+    map.on('move', handleViewportUpdate);
 
     // Unified click handler for measurement and feature selection
     map.on('click', (e) => {
@@ -300,6 +308,9 @@ export const MapView: FC = () => {
         position: 'relative'
       }}
     >
+      {/* Precision Cartographic Scale Suite (Representative Fraction & Dual Unit Bar) */}
+      <ScaleWidget />
+
       {/* Live Measurement Floating Overlay */}
       {measurementState.mode !== 'none' && measurementState.points.length > 0 && (
         <div
