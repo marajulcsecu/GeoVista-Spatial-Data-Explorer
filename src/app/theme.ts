@@ -7,9 +7,7 @@ export function getInitialTheme(): AppTheme {
   if (saved === 'dark' || saved === 'light') {
     return saved;
   }
-  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-    return 'light';
-  }
+  // Default to Dark Mode for all new visitors / first open
   return 'dark';
 }
 
