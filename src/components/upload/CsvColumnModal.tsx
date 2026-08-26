@@ -42,7 +42,7 @@ export const CsvColumnModal: FC = () => {
 
   const handleConfirm = async () => {
     if (!mapping.longitudeField || !mapping.latitudeField) {
-      setError('Please select both Longitude (X) and Latitude (Y) columns.');
+      setError('Please map both Longitude (X) and Latitude (Y) columns.');
       return;
     }
 
@@ -77,16 +77,16 @@ export const CsvColumnModal: FC = () => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: 20
+        padding: 16
       }}
     >
       <div
         className="glass-panel"
         style={{
           width: '100%',
-          maxWidth: 680,
+          maxWidth: 660,
           maxHeight: '90vh',
-          borderRadius: 'var(--radius-lg)',
+          borderRadius: 'var(--radius-sm)',
           overflow: 'hidden',
           display: 'flex',
           flexDirection: 'column',
@@ -96,59 +96,61 @@ export const CsvColumnModal: FC = () => {
         {/* Modal Header */}
         <div
           style={{
-            padding: '16px 20px',
+            padding: '12px 16px',
             borderBottom: '1px solid var(--border-color)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            background: 'var(--bg-surface-elevated)'
+            background: 'var(--bg-surface)'
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <FileSpreadsheet size={20} style={{ color: 'var(--accent-primary)' }} />
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <FileSpreadsheet size={16} style={{ color: 'var(--accent-emerald)' }} />
             <div>
-              <h2 style={{ fontSize: 16, fontWeight: 600 }}>Map CSV Columns</h2>
-              <p style={{ fontSize: 12, color: 'var(--text-muted)' }}>
-                {pendingCsvInfo.file.name} ({rows.length} rows detected)
+              <h2 style={{ fontSize: 13, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em', fontFamily: 'var(--font-mono)' }}>
+                CSV SPATIAL ATTRIBUTE MAPPING
+              </h2>
+              <p style={{ fontSize: 11, color: 'var(--text-muted)' }}>
+                {pendingCsvInfo.file.name} ({rows.length} records detected)
               </p>
             </div>
           </div>
-          <button onClick={handleCancel} className="btn-icon">
-            <X size={18} />
+          <button onClick={handleCancel} className="btn-icon" style={{ width: 24, height: 24 }}>
+            <X size={14} />
           </button>
         </div>
 
         {/* Modal Body */}
-        <div style={{ padding: 20, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 16 }}>
+        <div style={{ padding: 16, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: 14 }}>
           {error && (
             <div
               style={{
-                padding: '10px 14px',
-                background: 'rgba(244, 63, 94, 0.12)',
-                border: '1px solid rgba(244, 63, 94, 0.3)',
-                borderRadius: 'var(--radius-sm)',
+                padding: '8px 12px',
+                background: 'rgba(244, 63, 94, 0.08)',
+                border: '1px solid rgba(244, 63, 94, 0.25)',
+                borderRadius: 'var(--radius-xs)',
                 color: '#fb7185',
-                fontSize: 13,
+                fontSize: 11,
                 display: 'flex',
                 alignItems: 'center',
-                gap: 8
+                gap: 6
               }}
             >
-              <AlertCircle size={16} />
+              <AlertCircle size={14} />
               <span>{error}</span>
             </div>
           )}
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
             {/* Longitude (X) */}
             <div>
-              <label style={{ display: 'block', fontSize: 12, fontWeight: 600, marginBottom: 6 }}>
-                Longitude (X) Column <span style={{ color: 'var(--accent-rose)' }}>*</span>
+              <label style={{ display: 'block', fontSize: 11, fontWeight: 600, marginBottom: 4, fontFamily: 'var(--font-mono)' }}>
+                LONGITUDE (X) COLUMN <span style={{ color: 'var(--accent-rose)' }}>*</span>
               </label>
               <select
                 value={mapping.longitudeField}
                 onChange={(e) => setMapping({ ...mapping, longitudeField: e.target.value })}
-                style={{ width: '100%' }}
+                style={{ width: '100%', fontSize: 11, fontFamily: 'var(--font-mono)' }}
               >
                 <option value="">-- Select Column --</option>
                 {headers.map((h) => (
@@ -161,13 +163,13 @@ export const CsvColumnModal: FC = () => {
 
             {/* Latitude (Y) */}
             <div>
-              <label style={{ display: 'block', fontSize: 12, fontWeight: 600, marginBottom: 6 }}>
-                Latitude (Y) Column <span style={{ color: 'var(--accent-rose)' }}>*</span>
+              <label style={{ display: 'block', fontSize: 11, fontWeight: 600, marginBottom: 4, fontFamily: 'var(--font-mono)' }}>
+                LATITUDE (Y) COLUMN <span style={{ color: 'var(--accent-rose)' }}>*</span>
               </label>
               <select
                 value={mapping.latitudeField}
                 onChange={(e) => setMapping({ ...mapping, latitudeField: e.target.value })}
-                style={{ width: '100%' }}
+                style={{ width: '100%', fontSize: 11, fontFamily: 'var(--font-mono)' }}
               >
                 <option value="">-- Select Column --</option>
                 {headers.map((h) => (
@@ -180,15 +182,15 @@ export const CsvColumnModal: FC = () => {
 
             {/* Label / Feature Name */}
             <div>
-              <label style={{ display: 'block', fontSize: 12, fontWeight: 600, marginBottom: 6 }}>
-                Label / Name Column (Optional)
+              <label style={{ display: 'block', fontSize: 11, fontWeight: 600, marginBottom: 4, fontFamily: 'var(--font-mono)' }}>
+                LABEL / NAME FIELD (OPTIONAL)
               </label>
               <select
                 value={mapping.labelField || ''}
                 onChange={(e) => setMapping({ ...mapping, labelField: e.target.value })}
-                style={{ width: '100%' }}
+                style={{ width: '100%', fontSize: 11, fontFamily: 'var(--font-mono)' }}
               >
-                <option value="">-- None (Auto-generate #ID) --</option>
+                <option value="">-- None (Auto ID) --</option>
                 {headers.map((h) => (
                   <option key={h} value={h}>
                     {h}
@@ -199,15 +201,15 @@ export const CsvColumnModal: FC = () => {
 
             {/* Category */}
             <div>
-              <label style={{ display: 'block', fontSize: 12, fontWeight: 600, marginBottom: 6 }}>
-                Category / Group Column (Optional)
+              <label style={{ display: 'block', fontSize: 11, fontWeight: 600, marginBottom: 4, fontFamily: 'var(--font-mono)' }}>
+                CATEGORY / CLASS FIELD (OPTIONAL)
               </label>
               <select
                 value={mapping.categoryField || ''}
                 onChange={(e) => setMapping({ ...mapping, categoryField: e.target.value })}
-                style={{ width: '100%' }}
+                style={{ width: '100%', fontSize: 11, fontFamily: 'var(--font-mono)' }}
               >
-                <option value="">-- None (Single Color) --</option>
+                <option value="">-- None (Single Symbol) --</option>
                 {headers.map((h) => (
                   <option key={h} value={h}>
                     {h}
@@ -219,31 +221,32 @@ export const CsvColumnModal: FC = () => {
 
           {/* Sample Data Preview Grid */}
           <div>
-            <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-secondary)', marginBottom: 8 }}>
-              Sample Data Preview (First {sampleRows.length} Rows)
+            <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-secondary)', marginBottom: 6, fontFamily: 'var(--font-mono)' }}>
+              SAMPLE DATA PREVIEW ({sampleRows.length} ROWS)
             </div>
             <div
               style={{
                 overflowX: 'auto',
                 border: '1px solid var(--border-color)',
-                borderRadius: 'var(--radius-sm)',
+                borderRadius: 'var(--radius-xs)',
                 background: 'var(--bg-app)'
               }}
             >
-              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 11 }}>
                 <thead>
-                  <tr style={{ background: 'var(--bg-surface-elevated)', textAlign: 'left' }}>
+                  <tr style={{ background: 'var(--bg-surface)', textAlign: 'left' }}>
                     {headers.map((h) => (
                       <th
                         key={h}
                         style={{
-                          padding: '8px 12px',
+                          padding: '6px 10px',
                           borderBottom: '1px solid var(--border-color)',
                           color:
                             h === mapping.longitudeField || h === mapping.latitudeField
                               ? 'var(--accent-cyan)'
                               : 'var(--text-primary)',
-                          fontWeight: 600
+                          fontWeight: 600,
+                          fontFamily: 'var(--font-mono)'
                         }}
                       >
                         {h}
@@ -255,12 +258,12 @@ export const CsvColumnModal: FC = () => {
                 </thead>
                 <tbody>
                   {sampleRows.map((row, idx) => (
-                    <tr key={idx} style={{ borderBottom: '1px solid var(--border-color)' }}>
+                    <tr key={idx} style={{ borderBottom: '1px solid var(--border-subtle)' }}>
                       {headers.map((h) => (
                         <td
                           key={h}
                           style={{
-                            padding: '6px 12px',
+                            padding: '5px 10px',
                             color: 'var(--text-secondary)',
                             fontFamily:
                               h === mapping.longitudeField || h === mapping.latitudeField
@@ -282,19 +285,19 @@ export const CsvColumnModal: FC = () => {
         {/* Modal Footer */}
         <div
           style={{
-            padding: '14px 20px',
+            padding: '10px 16px',
             borderTop: '1px solid var(--border-color)',
-            background: 'var(--bg-surface-elevated)',
+            background: 'var(--bg-surface)',
             display: 'flex',
             justifyContent: 'flex-end',
-            gap: 10
+            gap: 8
           }}
         >
-          <button onClick={handleCancel} className="btn-secondary">
+          <button onClick={handleCancel} className="btn-secondary" style={{ padding: '4px 10px', fontSize: 11 }}>
             Cancel
           </button>
-          <button onClick={handleConfirm} className="btn-primary">
-            <Check size={16} />
+          <button onClick={handleConfirm} className="btn-primary" style={{ padding: '4px 12px', fontSize: 11 }}>
+            <Check size={13} />
             <span>Apply Mapping & Render</span>
           </button>
         </div>

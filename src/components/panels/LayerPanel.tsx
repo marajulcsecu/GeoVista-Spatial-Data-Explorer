@@ -5,7 +5,6 @@ import {
   EyeOff,
   Maximize2,
   Trash2,
-  Sliders,
   Tag,
   MapPin,
   FileCode,
@@ -28,10 +27,10 @@ export const LayerPanel: FC = () => {
 
   if (datasets.length === 0) {
     return (
-      <div style={{ padding: '24px 16px', textAlign: 'center', color: 'var(--text-muted)' }}>
-        <Layers size={32} style={{ margin: '0 auto 10px', opacity: 0.4 }} />
-        <p style={{ fontSize: 13 }}>No layers loaded yet.</p>
-        <p style={{ fontSize: 12, marginTop: 4 }}>Drop a file above or click "Load Demo Data".</p>
+      <div style={{ padding: '32px 16px', textAlign: 'center', color: 'var(--text-muted)' }}>
+        <Layers size={28} style={{ margin: '0 auto 8px', opacity: 0.3 }} />
+        <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-secondary)' }}>No layers in project</p>
+        <p style={{ fontSize: 11, marginTop: 4 }}>Ingest a spatial dataset above or click "Load Sample Survey".</p>
       </div>
     );
   }
@@ -42,30 +41,30 @@ export const LayerPanel: FC = () => {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 12, padding: '14px 16px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 8, padding: '10px 12px' }}>
       {/* Global Label Visibility Toggle */}
       <div
         style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '8px 12px',
+          padding: '6px 10px',
           background: 'var(--bg-surface)',
-          borderRadius: 'var(--radius-sm)',
+          borderRadius: 'var(--radius-xs)',
           border: '1px solid var(--border-color)',
-          fontSize: 12
+          fontSize: 11
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <Tag size={14} style={{ color: 'var(--accent-cyan)' }} />
-          <span>Feature Labels</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <Tag size={13} style={{ color: 'var(--accent-cyan)' }} />
+          <span style={{ fontWeight: 500 }}>Vector Feature Labels</span>
         </div>
         <button
           onClick={() => setLabelsVisible(!labelsVisible)}
           className={labelsVisible ? 'btn-primary' : 'btn-secondary'}
-          style={{ padding: '3px 10px', fontSize: 11 }}
+          style={{ padding: '2px 8px', fontSize: 10, height: 22 }}
         >
-          {labelsVisible ? 'Enabled' : 'Disabled'}
+          {labelsVisible ? 'VISIBLE' : 'HIDDEN'}
         </button>
       </div>
 
@@ -81,29 +80,29 @@ export const LayerPanel: FC = () => {
             style={{
               background: isActive ? 'var(--bg-surface-elevated)' : 'var(--bg-surface)',
               border: `1px solid ${isActive ? 'var(--border-focus)' : 'var(--border-color)'}`,
-              borderRadius: 'var(--radius-md)',
-              padding: 12,
+              borderRadius: 'var(--radius-sm)',
+              padding: 10,
               display: 'flex',
               flexDirection: 'column',
-              gap: 10,
-              boxShadow: isActive ? 'var(--shadow-md)' : 'none',
+              gap: 8,
+              boxShadow: isActive ? 'var(--shadow-sm)' : 'none',
               transition: 'var(--transition-fast)'
             }}
           >
             {/* Title & Quick Actions */}
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, overflow: 'hidden' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, overflow: 'hidden' }}>
                 {dataset.sourceFormat === 'csv' ? (
-                  <FileSpreadsheet size={16} style={{ color: '#10b981', flexShrink: 0 }} />
+                  <FileSpreadsheet size={15} style={{ color: '#10b981', flexShrink: 0 }} />
                 ) : dataset.sourceFormat === 'shapefile' ? (
-                  <FileCode size={16} style={{ color: '#f59e0b', flexShrink: 0 }} />
+                  <FileCode size={15} style={{ color: '#f59e0b', flexShrink: 0 }} />
                 ) : (
-                  <MapPin size={16} style={{ color: '#3b82f6', flexShrink: 0 }} />
+                  <MapPin size={15} style={{ color: '#38bdf8', flexShrink: 0 }} />
                 )}
                 <span
                   style={{
                     fontWeight: 600,
-                    fontSize: 13,
+                    fontSize: 12,
                     color: 'var(--text-primary)',
                     whiteSpace: 'nowrap',
                     overflow: 'hidden',
@@ -115,7 +114,7 @@ export const LayerPanel: FC = () => {
                 </span>
               </div>
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                 {/* Visibility Toggle */}
                 <button
                   onClick={(e) => {
@@ -123,10 +122,10 @@ export const LayerPanel: FC = () => {
                     toggleLayerVisibility(dataset.id);
                   }}
                   className="btn-icon"
-                  style={{ width: 28, height: 28 }}
+                  style={{ width: 24, height: 24 }}
                   title={dataset.visible ? 'Hide Layer' : 'Show Layer'}
                 >
-                  {dataset.visible ? <Eye size={14} /> : <EyeOff size={14} style={{ color: 'var(--accent-rose)' }} />}
+                  {dataset.visible ? <Eye size={13} /> : <EyeOff size={13} style={{ color: 'var(--accent-rose)' }} />}
                 </button>
 
                 {/* Zoom to Extent */}
@@ -136,10 +135,10 @@ export const LayerPanel: FC = () => {
                     handleZoomToLayer(dataset.bbox);
                   }}
                   className="btn-icon"
-                  style={{ width: 28, height: 28 }}
+                  style={{ width: 24, height: 24 }}
                   title="Zoom to Extent"
                 >
-                  <Maximize2 size={14} />
+                  <Maximize2 size={13} />
                 </button>
 
                 {/* Delete Layer */}
@@ -149,10 +148,10 @@ export const LayerPanel: FC = () => {
                     removeDataset(dataset.id);
                   }}
                   className="btn-icon"
-                  style={{ width: 28, height: 28, color: 'var(--accent-rose)' }}
+                  style={{ width: 24, height: 24, color: 'var(--accent-rose)' }}
                   title="Remove Layer"
                 >
-                  <Trash2 size={14} />
+                  <Trash2 size={13} />
                 </button>
               </div>
             </div>
@@ -163,18 +162,19 @@ export const LayerPanel: FC = () => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                fontSize: 11,
-                color: 'var(--text-muted)'
+                fontSize: 10,
+                color: 'var(--text-muted)',
+                fontFamily: 'var(--font-mono)'
               }}
             >
-              <span>{featureCount} feature{featureCount !== 1 ? 's' : ''} ({dataset.sourceFormat.toUpperCase()})</span>
-              <span>{dataset.categories.length} categories</span>
+              <span>{featureCount} FEATURES ({dataset.sourceFormat.toUpperCase()})</span>
+              <span>{dataset.categories.length} CATEGORIES</span>
             </div>
 
             {/* Opacity Slider */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <span style={{ fontSize: 11, color: 'var(--text-secondary)', minWidth: 45 }}>
-                Opacity:
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <span style={{ fontSize: 10, color: 'var(--text-secondary)', minWidth: 42, textTransform: 'uppercase', fontFamily: 'var(--font-mono)' }}>
+                OPACITY:
               </span>
               <input
                 type="range"
@@ -184,9 +184,9 @@ export const LayerPanel: FC = () => {
                 value={dataset.opacity}
                 onChange={(e) => setLayerOpacity(dataset.id, parseFloat(e.target.value))}
                 onClick={(e) => e.stopPropagation()}
-                style={{ flex: 1, accentColor: 'var(--accent-primary)', height: 4 }}
+                style={{ flex: 1, accentColor: '#38bdf8', height: 4 }}
               />
-              <span style={{ fontSize: 11, color: 'var(--text-muted)', width: 30, textAlign: 'right' }}>
+              <span style={{ fontSize: 10, color: 'var(--text-muted)', width: 28, textAlign: 'right', fontFamily: 'var(--font-mono)' }}>
                 {Math.round(dataset.opacity * 100)}%
               </span>
             </div>

@@ -16,10 +16,10 @@ export const LegendPanel: FC = () => {
 
   if (!activeDataset || activeDataset.categories.length === 0) {
     return (
-      <div style={{ padding: '24px 16px', textAlign: 'center', color: 'var(--text-muted)' }}>
-        <Palette size={32} style={{ margin: '0 auto 10px', opacity: 0.4 }} />
-        <p style={{ fontSize: 13 }}>No categories detected.</p>
-        <p style={{ fontSize: 12, marginTop: 4 }}>Load a dataset with categorical fields to view legend symbology.</p>
+      <div style={{ padding: '32px 16px', textAlign: 'center', color: 'var(--text-muted)' }}>
+        <Palette size={28} style={{ margin: '0 auto 8px', opacity: 0.3 }} />
+        <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-secondary)' }}>No categorical classes</p>
+        <p style={{ fontSize: 11, marginTop: 4 }}>Load a dataset with categorical classification attributes.</p>
       </div>
     );
   }
@@ -37,39 +37,39 @@ export const LegendPanel: FC = () => {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 12, padding: '14px 16px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 8, padding: '10px 12px' }}>
       {/* Legend Header with Select All / Clear All */}
       <div
         style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          paddingBottom: 8,
+          paddingBottom: 6,
           borderBottom: '1px solid var(--border-color)'
         }}
       >
         <div>
-          <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)' }}>
-            Categorical Legend
+          <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-primary)' }}>
+            Categorical Symbology
           </div>
-          <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>
-            Field: <code style={{ color: 'var(--accent-cyan)' }}>{activeDataset.primaryCategoryField || 'Category'}</code>
+          <div style={{ fontSize: 10, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
+            FIELD: <span style={{ color: 'var(--accent-cyan)' }}>{activeDataset.primaryCategoryField || 'Category'}</span>
           </div>
         </div>
 
         <button
           onClick={() => toggleAllCategories(!allVisible)}
           className="btn-ghost"
-          style={{ fontSize: 11, padding: '4px 8px' }}
+          style={{ fontSize: 10, padding: '2px 6px', height: 22 }}
         >
           {allVisible ? (
             <>
-              <Square size={13} />
-              <span>Clear All</span>
+              <Square size={11} />
+              <span>Deselect All</span>
             </>
           ) : (
             <>
-              <CheckSquare size={13} />
+              <CheckSquare size={11} />
               <span>Select All</span>
             </>
           )}
@@ -77,7 +77,7 @@ export const LegendPanel: FC = () => {
       </div>
 
       {/* Category List */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
         {activeDataset.categories.map((cat) => {
           const isVisible = categoryFilter[cat.name] !== false;
           const currentColor = activeDataset.style.customColorMap?.[cat.name] || cat.color;
@@ -89,28 +89,28 @@ export const LegendPanel: FC = () => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                padding: '7px 10px',
+                padding: '5px 8px',
                 background: isVisible ? 'var(--bg-surface)' : 'var(--bg-hover)',
                 border: '1px solid var(--border-color)',
-                borderRadius: 'var(--radius-sm)',
+                borderRadius: 'var(--radius-xs)',
                 opacity: isVisible ? 1 : 0.6,
                 transition: 'var(--transition-fast)'
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 10, overflow: 'hidden' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, overflow: 'hidden' }}>
                 {/* Color Swatch with native color picker */}
                 <label
                   style={{
-                    width: 16,
-                    height: 16,
-                    borderRadius: 'var(--radius-full)',
+                    width: 12,
+                    height: 12,
+                    borderRadius: 'var(--radius-xs)',
                     background: currentColor,
-                    boxShadow: `0 0 8px ${currentColor}66`,
+                    boxShadow: `0 0 6px ${currentColor}88`,
                     cursor: 'pointer',
                     flexShrink: 0,
                     position: 'relative'
                   }}
-                  title="Click to change category color"
+                  title="Click to customize category color"
                 >
                   <input
                     type="color"
@@ -129,7 +129,7 @@ export const LegendPanel: FC = () => {
                 {/* Category Name */}
                 <span
                   style={{
-                    fontSize: 12,
+                    fontSize: 11,
                     fontWeight: 500,
                     color: isVisible ? 'var(--text-primary)' : 'var(--text-muted)',
                     whiteSpace: 'nowrap',
@@ -143,10 +143,17 @@ export const LegendPanel: FC = () => {
               </div>
 
               {/* Count & Toggle Checkbox */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                 <span
-                  className="badge badge-info"
-                  style={{ fontSize: 10, padding: '1px 6px', fontWeight: 600 }}
+                  style={{
+                    fontSize: 9,
+                    fontFamily: 'var(--font-mono)',
+                    padding: '1px 5px',
+                    background: 'var(--bg-surface-elevated)',
+                    border: '1px solid var(--border-color)',
+                    borderRadius: 'var(--radius-xs)',
+                    color: 'var(--text-secondary)'
+                  }}
                 >
                   {cat.count}
                 </span>
@@ -154,13 +161,13 @@ export const LegendPanel: FC = () => {
                 <button
                   onClick={() => setCategoryVisibility(cat.name, !isVisible)}
                   className="btn-ghost"
-                  style={{ padding: 4 }}
-                  title={isVisible ? 'Hide this category' : 'Show this category'}
+                  style={{ padding: 2, height: 20, width: 20 }}
+                  title={isVisible ? 'Hide category from map' : 'Show category on map'}
                 >
                   {isVisible ? (
-                    <Eye size={14} style={{ color: 'var(--accent-primary)' }} />
+                    <Eye size={12} style={{ color: 'var(--accent-cyan)' }} />
                   ) : (
-                    <EyeOff size={14} style={{ color: 'var(--text-muted)' }} />
+                    <EyeOff size={12} style={{ color: 'var(--text-muted)' }} />
                   )}
                 </button>
               </div>

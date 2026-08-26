@@ -5,9 +5,6 @@ import {
   Maximize2,
   Copy,
   Check,
-  Tag,
-  Layers,
-  Compass,
   FileText
 } from 'lucide-react';
 import { useAppStore } from '../../app/store';
@@ -38,7 +35,7 @@ export const FeatureInspector: FC = () => {
   }
 
   const categoryColor =
-    dataset?.style.customColorMap?.[props.__category || ''] || '#3b82f6';
+    dataset?.style.customColorMap?.[props.__category || ''] || '#38bdf8';
 
   const handleCopy = () => {
     if (!coordinates) return;
@@ -62,11 +59,11 @@ export const FeatureInspector: FC = () => {
       className="glass-panel"
       style={{
         position: 'absolute',
-        top: 16,
-        right: 16,
-        bottom: 16,
+        top: 14,
+        right: 14,
+        bottom: 14,
         width: 'var(--inspector-width)',
-        borderRadius: 'var(--radius-lg)',
+        borderRadius: 'var(--radius-sm)',
         zIndex: 15,
         display: 'flex',
         flexDirection: 'column',
@@ -78,26 +75,26 @@ export const FeatureInspector: FC = () => {
       {/* Header */}
       <div
         style={{
-          padding: '14px 16px',
+          padding: '10px 14px',
           borderBottom: '1px solid var(--border-color)',
-          background: 'var(--bg-surface-elevated)',
+          background: 'var(--bg-surface)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between'
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
           <div
             style={{
-              width: 12,
-              height: 12,
-              borderRadius: 'var(--radius-full)',
+              width: 8,
+              height: 8,
+              borderRadius: 'var(--radius-xs)',
               background: categoryColor,
-              boxShadow: `0 0 8px ${categoryColor}88`
+              boxShadow: `0 0 6px ${categoryColor}aa`
             }}
           />
-          <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)' }}>
-            Feature Inspector
+          <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-primary)', textTransform: 'uppercase', letterSpacing: '0.04em', fontFamily: 'var(--font-mono)' }}>
+            FEATURE INSPECTOR
           </span>
         </div>
 
@@ -107,21 +104,21 @@ export const FeatureInspector: FC = () => {
             clearSelection();
           }}
           className="btn-icon"
-          style={{ width: 28, height: 28 }}
+          style={{ width: 22, height: 22 }}
           title="Close Inspector"
         >
-          <X size={16} />
+          <X size={13} />
         </button>
       </div>
 
       {/* Content */}
       <div
         style={{
-          padding: 16,
+          padding: 12,
           overflowY: 'auto',
           display: 'flex',
           flexDirection: 'column',
-          gap: 14,
+          gap: 10,
           flex: 1
         }}
       >
@@ -130,25 +127,26 @@ export const FeatureInspector: FC = () => {
           style={{
             background: 'var(--bg-surface)',
             border: '1px solid var(--border-color)',
-            borderRadius: 'var(--radius-md)',
-            padding: 12
+            borderRadius: 'var(--radius-xs)',
+            padding: 10
           }}
         >
-          <h2 style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.3 }}>
+          <h2 style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.3 }}>
             {props.__displayName}
           </h2>
-          <div style={{ display: 'flex', gap: 6, marginTop: 8, flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: 4, marginTop: 6, flexWrap: 'wrap' }}>
             <span
               className="badge"
               style={{
-                background: `${categoryColor}22`,
+                background: `${categoryColor}18`,
                 color: categoryColor,
-                border: `1px solid ${categoryColor}55`
+                border: `1px solid ${categoryColor}44`,
+                fontSize: 9
               }}
             >
-              {props.__category || 'Uncategorized'}
+              {props.__category || 'UNCATEGORIZED'}
             </span>
-            <span className="badge badge-info">{feature.geometry.type}</span>
+            <span className="badge badge-info" style={{ fontSize: 9 }}>{feature.geometry.type}</span>
           </div>
         </div>
 
@@ -158,34 +156,34 @@ export const FeatureInspector: FC = () => {
             style={{
               background: 'var(--bg-surface)',
               border: '1px solid var(--border-color)',
-              borderRadius: 'var(--radius-md)',
-              padding: 12,
+              borderRadius: 'var(--radius-xs)',
+              padding: 10,
               display: 'flex',
               flexDirection: 'column',
-              gap: 8
+              gap: 6
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, fontWeight: 600 }}>
-                <MapPin size={14} style={{ color: 'var(--accent-cyan)' }} />
+              <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 11, fontWeight: 600 }}>
+                <MapPin size={12} style={{ color: 'var(--accent-cyan)' }} />
                 <span>Geographic Position</span>
               </div>
 
-              <div style={{ display: 'flex', gap: 4 }}>
+              <div style={{ display: 'flex', gap: 3 }}>
                 <button
                   onClick={handleCopy}
                   className="btn-ghost"
-                  style={{ padding: '3px 6px', fontSize: 11 }}
+                  style={{ padding: '2px 5px', fontSize: 10, height: 20 }}
                   title="Copy Lat, Lng coordinates"
                 >
                   {copied ? (
                     <>
-                      <Check size={12} style={{ color: 'var(--accent-emerald)' }} />
+                      <Check size={11} style={{ color: 'var(--accent-emerald)' }} />
                       <span style={{ color: 'var(--accent-emerald)' }}>Copied</span>
                     </>
                   ) : (
                     <>
-                      <Copy size={12} />
+                      <Copy size={11} />
                       <span>Copy</span>
                     </>
                   )}
@@ -194,10 +192,10 @@ export const FeatureInspector: FC = () => {
                 <button
                   onClick={handleZoomTo}
                   className="btn-ghost"
-                  style={{ padding: '3px 6px', fontSize: 11 }}
+                  style={{ padding: '2px 5px', fontSize: 10, height: 20 }}
                   title="Zoom to Feature"
                 >
-                  <Maximize2 size={12} />
+                  <Maximize2 size={11} />
                   <span>Zoom</span>
                 </button>
               </div>
@@ -206,18 +204,18 @@ export const FeatureInspector: FC = () => {
             <div
               style={{
                 fontFamily: 'var(--font-mono)',
-                fontSize: 11,
+                fontSize: 10,
                 color: 'var(--text-secondary)',
                 background: 'var(--bg-app)',
-                padding: '8px 10px',
-                borderRadius: 'var(--radius-sm)',
+                padding: '6px 8px',
+                borderRadius: 'var(--radius-xs)',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: 4
+                gap: 2
               }}
             >
-              <div>Lat: {coordinates[1].toFixed(6)}° ({decimalToDMS(coordinates[1], true)})</div>
-              <div>Lng: {coordinates[0].toFixed(6)}° ({decimalToDMS(coordinates[0], false)})</div>
+              <div>LAT: {coordinates[1].toFixed(6)}° ({decimalToDMS(coordinates[1], true)})</div>
+              <div>LNG: {coordinates[0].toFixed(6)}° ({decimalToDMS(coordinates[0], false)})</div>
             </div>
           </div>
         )}
@@ -227,15 +225,15 @@ export const FeatureInspector: FC = () => {
           style={{
             background: 'var(--bg-surface)',
             border: '1px solid var(--border-color)',
-            borderRadius: 'var(--radius-md)',
-            padding: 12,
+            borderRadius: 'var(--radius-xs)',
+            padding: 10,
             display: 'flex',
             flexDirection: 'column',
-            gap: 8
+            gap: 6
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, fontWeight: 600 }}>
-            <FileText size={14} style={{ color: 'var(--accent-amber)' }} />
+          <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 11, fontWeight: 600 }}>
+            <FileText size={12} style={{ color: 'var(--accent-amber)' }} />
             <span>Attributes ({userAttributes.length})</span>
           </div>
 
@@ -243,9 +241,8 @@ export const FeatureInspector: FC = () => {
             style={{
               display: 'flex',
               flexDirection: 'column',
-              gap: 4,
               border: '1px solid var(--border-color)',
-              borderRadius: 'var(--radius-sm)',
+              borderRadius: 'var(--radius-xs)',
               overflow: 'hidden'
             }}
           >
@@ -254,20 +251,21 @@ export const FeatureInspector: FC = () => {
                 key={key}
                 style={{
                   display: 'flex',
-                  fontSize: 12,
-                  padding: '6px 10px',
+                  fontSize: 11,
+                  padding: '5px 8px',
                   background: idx % 2 === 0 ? 'var(--bg-surface-elevated)' : 'transparent',
                   borderBottom:
-                    idx !== userAttributes.length - 1 ? '1px solid var(--border-color)' : 'none'
+                    idx !== userAttributes.length - 1 ? '1px solid var(--border-subtle)' : 'none'
                 }}
               >
                 <span
                   style={{
                     color: 'var(--text-muted)',
                     fontWeight: 500,
-                    width: '40%',
+                    width: '42%',
                     flexShrink: 0,
-                    paddingRight: 6
+                    paddingRight: 4,
+                    fontFamily: 'var(--font-mono)'
                   }}
                 >
                   {key}

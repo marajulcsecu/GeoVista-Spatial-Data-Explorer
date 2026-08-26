@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, type FC } from 'react';
-import { Map as MapIcon, ChevronDown, Check } from 'lucide-react';
+import { ChevronDown, Check, Layers } from 'lucide-react';
 import { useAppStore } from '../../app/store';
 import { BASEMAP_OPTIONS } from '../../map/mapStyles';
 
@@ -24,32 +24,31 @@ export const BasemapSwitcher: FC = () => {
     <div ref={menuRef} style={{ position: 'relative' }}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="glass-panel"
+        className="map-hud-control"
         style={{
-          padding: '6px 12px',
-          borderRadius: 'var(--radius-md)',
-          fontSize: 12,
+          padding: '5px 10px',
+          fontSize: 11,
           display: 'flex',
           alignItems: 'center',
           gap: 6,
-          fontWeight: 500
+          fontWeight: 500,
+          height: 28
         }}
-        title="Switch Basemap Style"
+        title="Switch Cartographic Basemap"
       >
         <span>{currentBasemap.thumbnail}</span>
-        <span>{currentBasemap.label}</span>
-        <ChevronDown size={12} style={{ opacity: 0.6 }} />
+        <span style={{ fontWeight: 600 }}>{currentBasemap.label}</span>
+        <ChevronDown size={11} style={{ opacity: 0.6 }} />
       </button>
 
       {isOpen && (
         <div
-          className="glass-panel"
+          className="map-hud-control"
           style={{
             position: 'absolute',
-            bottom: 'calc(100% + 6px)',
+            bottom: 'calc(100% + 5px)',
             right: 0,
-            width: 180,
-            borderRadius: 'var(--radius-md)',
+            width: 190,
             padding: 4,
             zIndex: 30,
             display: 'flex',
@@ -57,6 +56,20 @@ export const BasemapSwitcher: FC = () => {
             gap: 2
           }}
         >
+          <div
+            style={{
+              padding: '4px 6px',
+              fontSize: 10,
+              fontWeight: 600,
+              color: 'var(--text-muted)',
+              textTransform: 'uppercase',
+              letterSpacing: '0.04em',
+              fontFamily: 'var(--font-mono)'
+            }}
+          >
+            Select Basemap Style
+          </div>
+
           {BASEMAP_OPTIONS.map((opt) => (
             <button
               key={opt.key}
@@ -68,17 +81,19 @@ export const BasemapSwitcher: FC = () => {
               style={{
                 width: '100%',
                 justifyContent: 'space-between',
-                padding: '6px 8px',
-                fontSize: 12,
-                background: opt.key === basemapStyle ? 'var(--bg-hover)' : 'transparent'
+                padding: '5px 8px',
+                fontSize: 11,
+                borderRadius: 'var(--radius-xs)',
+                background: opt.key === basemapStyle ? 'var(--bg-active)' : 'transparent',
+                color: opt.key === basemapStyle ? '#ffffff' : 'var(--text-primary)'
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                 <span>{opt.thumbnail}</span>
-                <span>{opt.label}</span>
+                <span style={{ fontWeight: opt.key === basemapStyle ? 600 : 400 }}>{opt.label}</span>
               </div>
               {opt.key === basemapStyle && (
-                <Check size={14} style={{ color: 'var(--accent-primary)' }} />
+                <Check size={12} style={{ color: 'var(--accent-cyan)' }} />
               )}
             </button>
           ))}

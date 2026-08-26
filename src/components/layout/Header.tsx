@@ -7,7 +7,6 @@ import {
   Sun,
   HelpCircle,
   Layers,
-  UploadCloud,
   Table as TableIcon
 } from 'lucide-react';
 import { useAppStore } from '../../app/store';
@@ -24,6 +23,11 @@ export const Header: FC = () => {
     setAttributeTableOpen
   } = useAppStore();
 
+  const totalFeatures = datasets.reduce(
+    (acc, d) => acc + (d.visible ? d.featureCollection.features.length : 0),
+    0
+  );
+
   return (
     <header
       style={{
@@ -33,34 +37,35 @@ export const Header: FC = () => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: '0 20px',
+        padding: '0 16px',
         zIndex: 20,
         position: 'relative'
       }}
     >
-      {/* App Logo & Title */}
+      {/* App Brand & University GIS Lab Banner */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
         <div
           style={{
-            width: 36,
-            height: 36,
-            borderRadius: 'var(--radius-md)',
-            background: 'linear-gradient(135deg, #3b82f6, #06b6d4)',
+            width: 32,
+            height: 32,
+            borderRadius: 'var(--radius-sm)',
+            background: 'linear-gradient(135deg, #0284c7, #0369a1)',
+            border: '1px solid rgba(255, 255, 255, 0.15)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             color: '#ffffff',
-            boxShadow: '0 2px 8px rgba(59, 130, 246, 0.4)'
+            boxShadow: '0 2px 6px rgba(0, 0, 0, 0.3)'
           }}
         >
-          <Compass size={22} />
+          <Compass size={18} />
         </div>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <h1
               style={{
                 fontFamily: 'var(--font-brand)',
-                fontSize: 18,
+                fontSize: 16,
                 fontWeight: 700,
                 letterSpacing: '-0.02em',
                 color: 'var(--text-primary)'
@@ -70,73 +75,84 @@ export const Header: FC = () => {
             </h1>
             <span
               className="badge badge-info"
-              style={{ fontSize: 10, padding: '1px 6px' }}
+              style={{ fontSize: 9, padding: '1px 5px' }}
             >
-              Explorer
+              GIS WORKSTATION
             </span>
           </div>
           <p
             style={{
               fontSize: 11,
               color: 'var(--text-muted)',
-              whiteSpace: 'nowrap'
+              whiteSpace: 'nowrap',
+              fontFamily: 'var(--font-sans)',
+              letterSpacing: '0.01em'
             }}
           >
-            Spatial Data Viewer & Ingestion Engine
+            Spatial Data Ingestion & Cartographic Exploration Engine
           </p>
         </div>
       </div>
 
-      {/* Action Buttons */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+      {/* Action Buttons Toolbar */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
         {/* Load Demo Dataset */}
         <button
           onClick={() => loadDemoDataset()}
           className="btn-primary"
-          title="Load Group 6 Botanical Garden Survey demo dataset"
-          style={{
-            background: 'linear-gradient(135deg, #2563eb, #3b82f6)',
-            fontSize: 13,
-            padding: '7px 14px'
-          }}
+          title="Load University Botanical Garden Survey sample dataset"
         >
-          <Sparkles size={16} />
-          <span>Load Demo Data</span>
+          <Sparkles size={14} />
+          <span>Load Sample Survey</span>
         </button>
 
         {/* Toggle Attribute Table */}
         <button
           onClick={() => setAttributeTableOpen(!isAttributeTableOpen)}
           className={isAttributeTableOpen ? 'btn-primary' : 'btn-secondary'}
-          style={{ fontSize: 13, padding: '7px 12px' }}
-          title="Toggle Attribute Table"
+          title="Toggle Attribute Data Grid"
           disabled={datasets.length === 0}
+          style={{ opacity: datasets.length === 0 ? 0.5 : 1, cursor: datasets.length === 0 ? 'not-allowed' : 'pointer' }}
         >
-          <TableIcon size={16} />
-          <span>Table</span>
+          <TableIcon size={14} />
+          <span>Attribute Grid</span>
+          {datasets.length > 0 && (
+            <span
+              style={{
+                fontSize: 10,
+                fontFamily: 'var(--font-mono)',
+                padding: '1px 4px',
+                background: isAttributeTableOpen ? 'rgba(0,0,0,0.25)' : 'rgba(255,255,255,0.08)',
+                borderRadius: 'var(--radius-xs)',
+                marginLeft: 2
+              }}
+            >
+              {totalFeatures}
+            </span>
+          )}
         </button>
 
         {/* Export Dropdown */}
         <ExportMenu />
 
-        <div style={{ width: 1, height: 24, background: 'var(--border-color)', margin: '0 4px' }} />
+        <div style={{ width: 1, height: 20, background: 'var(--border-color)', margin: '0 2px' }} />
 
         {/* Theme Toggle */}
         <button
           onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
           className="btn-icon"
-          title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
+          title={`Switch to ${theme === 'dark' ? 'Light Workstation' : 'Dark Workstation'} Mode`}
         >
-          {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+          {theme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}
         </button>
 
-        {/* Help Modal */}
+        {/* Help / Guide Modal */}
         <button
           onClick={() => setHelpOpen(true)}
           className="btn-icon"
-          title="Help & GIS Information"
+          title="GIS Technical Information & Specifications"
         >
-          <HelpCircle size={18} />
+          <HelpCircle size={15} />
         </button>
       </div>
     </header>

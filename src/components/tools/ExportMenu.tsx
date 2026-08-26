@@ -26,10 +26,10 @@ export const ExportMenu: FC = () => {
     return (
       <button
         className="btn-secondary"
-        style={{ fontSize: 13, padding: '7px 12px', opacity: 0.5, cursor: 'not-allowed' }}
+        style={{ opacity: 0.5, cursor: 'not-allowed' }}
         disabled
       >
-        <Download size={16} />
+        <Download size={13} />
         <span>Export</span>
       </button>
     );
@@ -40,11 +40,11 @@ export const ExportMenu: FC = () => {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="btn-secondary"
-        style={{ fontSize: 13, padding: '7px 12px' }}
+        title="Export spatial layers or map rendering"
       >
-        <Download size={16} />
+        <Download size={13} />
         <span>Export</span>
-        <ChevronDown size={14} style={{ opacity: 0.7 }} />
+        <ChevronDown size={11} style={{ opacity: 0.7 }} />
       </button>
 
       {isOpen && (
@@ -52,11 +52,11 @@ export const ExportMenu: FC = () => {
           className="glass-panel"
           style={{
             position: 'absolute',
-            top: 'calc(100% + 6px)',
+            top: 'calc(100% + 5px)',
             right: 0,
-            width: 220,
-            borderRadius: 'var(--radius-md)',
-            padding: 6,
+            width: 210,
+            borderRadius: 'var(--radius-sm)',
+            padding: 4,
             zIndex: 50,
             display: 'flex',
             flexDirection: 'column',
@@ -65,15 +65,16 @@ export const ExportMenu: FC = () => {
         >
           <div
             style={{
-              padding: '6px 10px',
-              fontSize: 11,
+              padding: '4px 8px',
+              fontSize: 10,
               fontWeight: 600,
               color: 'var(--text-muted)',
               textTransform: 'uppercase',
-              letterSpacing: '0.04em'
+              letterSpacing: '0.04em',
+              fontFamily: 'var(--font-mono)'
             }}
           >
-            Export Options ({activeDataset.name})
+            Export: {activeDataset.name}
           </div>
 
           {/* Export Normalized GeoJSON */}
@@ -83,9 +84,9 @@ export const ExportMenu: FC = () => {
               setIsOpen(false);
             }}
             className="btn-ghost"
-            style={{ width: '100%', justifyContent: 'flex-start', padding: '8px 10px', fontSize: 13 }}
+            style={{ width: '100%', justifyContent: 'flex-start', padding: '6px 8px', fontSize: 12, borderRadius: 'var(--radius-xs)' }}
           >
-            <FileJson size={16} style={{ color: '#3b82f6' }} />
+            <FileJson size={14} style={{ color: '#38bdf8' }} />
             <span>Normalized GeoJSON</span>
           </button>
 
@@ -99,10 +100,10 @@ export const ExportMenu: FC = () => {
               setIsOpen(false);
             }}
             className="btn-ghost"
-            style={{ width: '100%', justifyContent: 'flex-start', padding: '8px 10px', fontSize: 13 }}
+            style={{ width: '100%', justifyContent: 'flex-start', padding: '6px 8px', fontSize: 12, borderRadius: 'var(--radius-xs)' }}
           >
-            <FileJson size={16} style={{ color: '#06b6d4' }} />
-            <span>Visible Only (GeoJSON)</span>
+            <FileJson size={14} style={{ color: '#06b6d4' }} />
+            <span>Filtered Features Only</span>
           </button>
 
           {/* Export CSV */}
@@ -112,9 +113,9 @@ export const ExportMenu: FC = () => {
               setIsOpen(false);
             }}
             className="btn-ghost"
-            style={{ width: '100%', justifyContent: 'flex-start', padding: '8px 10px', fontSize: 13 }}
+            style={{ width: '100%', justifyContent: 'flex-start', padding: '6px 8px', fontSize: 12, borderRadius: 'var(--radius-xs)' }}
           >
-            <FileSpreadsheet size={16} style={{ color: '#10b981' }} />
+            <FileSpreadsheet size={14} style={{ color: '#10b981' }} />
             <span>Attribute Table (CSV)</span>
           </button>
 
@@ -125,10 +126,10 @@ export const ExportMenu: FC = () => {
               setIsOpen(false);
             }}
             className="btn-ghost"
-            style={{ width: '100%', justifyContent: 'flex-start', padding: '8px 10px', fontSize: 13 }}
+            style={{ width: '100%', justifyContent: 'flex-start', padding: '6px 8px', fontSize: 12, borderRadius: 'var(--radius-xs)' }}
           >
-            <ImageIcon size={16} style={{ color: '#f59e0b' }} />
-            <span>Map Screenshot (PNG)</span>
+            <ImageIcon size={14} style={{ color: '#f59e0b' }} />
+            <span>Map Render (PNG)</span>
           </button>
         </div>
       )}

@@ -5,8 +5,7 @@ import {
   ShieldCheck,
   BarChart3,
   Search,
-  RotateCcw,
-  UploadCloud
+  RotateCcw
 } from 'lucide-react';
 import { useAppStore } from '../../app/store';
 import { FileDropzone } from '../upload/FileDropzone';
@@ -48,39 +47,47 @@ export const Sidebar: FC = () => {
         <FileDropzone />
       </div>
 
-      {/* Sidebar Tabs */}
+      {/* Sidebar Segmented Navigation */}
       <div
         style={{
           display: 'flex',
           borderBottom: '1px solid var(--border-color)',
-          background: 'var(--bg-surface-elevated)',
+          background: 'var(--bg-surface)',
+          padding: '4px 6px',
+          gap: 2,
           flexShrink: 0
         }}
       >
         {/* Layers Tab */}
         <button
           onClick={() => setActiveSidebarTab('layers')}
-          className="btn-ghost"
           style={{
             flex: 1,
-            borderRadius: 0,
-            padding: '10px 4px',
-            fontSize: 12,
-            fontWeight: activeSidebarTab === 'layers' ? 600 : 400,
+            padding: '6px 2px',
+            fontSize: 11,
+            fontWeight: activeSidebarTab === 'layers' ? 600 : 500,
+            borderRadius: 'var(--radius-xs)',
             color:
-              activeSidebarTab === 'layers' ? 'var(--accent-primary)' : 'var(--text-secondary)',
-            borderBottom:
-              activeSidebarTab === 'layers' ? '2px solid var(--accent-primary)' : '2px solid transparent',
+              activeSidebarTab === 'layers' ? '#ffffff' : 'var(--text-secondary)',
+            background:
+              activeSidebarTab === 'layers' ? 'var(--bg-surface-elevated)' : 'transparent',
+            border: activeSidebarTab === 'layers' ? '1px solid var(--border-color)' : '1px solid transparent',
             gap: 4
           }}
           title="Layer Management"
         >
-          <Layers size={15} />
+          <Layers size={13} style={{ color: activeSidebarTab === 'layers' ? 'var(--accent-cyan)' : 'inherit' }} />
           <span>Layers</span>
           {datasets.length > 0 && (
             <span
-              className="badge badge-info"
-              style={{ fontSize: 10, padding: '0 5px' }}
+              style={{
+                fontSize: 9,
+                fontFamily: 'var(--font-mono)',
+                padding: '0 4px',
+                background: 'rgba(56, 189, 248, 0.15)',
+                color: 'var(--accent-cyan)',
+                borderRadius: 'var(--radius-xs)'
+              }}
             >
               {datasets.length}
             </span>
@@ -90,103 +97,103 @@ export const Sidebar: FC = () => {
         {/* Legend Tab */}
         <button
           onClick={() => setActiveSidebarTab('legend')}
-          className="btn-ghost"
           style={{
             flex: 1,
-            borderRadius: 0,
-            padding: '10px 4px',
-            fontSize: 12,
-            fontWeight: activeSidebarTab === 'legend' ? 600 : 400,
+            padding: '6px 2px',
+            fontSize: 11,
+            fontWeight: activeSidebarTab === 'legend' ? 600 : 500,
+            borderRadius: 'var(--radius-xs)',
             color:
-              activeSidebarTab === 'legend' ? 'var(--accent-primary)' : 'var(--text-secondary)',
-            borderBottom:
-              activeSidebarTab === 'legend' ? '2px solid var(--accent-primary)' : '2px solid transparent',
+              activeSidebarTab === 'legend' ? '#ffffff' : 'var(--text-secondary)',
+            background:
+              activeSidebarTab === 'legend' ? 'var(--bg-surface-elevated)' : 'transparent',
+            border: activeSidebarTab === 'legend' ? '1px solid var(--border-color)' : '1px solid transparent',
             gap: 4
           }}
-          title="Symbology & Legend"
+          title="Symbology & Categorical Legend"
         >
-          <Palette size={15} />
+          <Palette size={13} style={{ color: activeSidebarTab === 'legend' ? 'var(--accent-emerald)' : 'inherit' }} />
           <span>Legend</span>
         </button>
 
         {/* Validation Tab */}
         <button
           onClick={() => setActiveSidebarTab('validation')}
-          className="btn-ghost"
           style={{
             flex: 1,
-            borderRadius: 0,
-            padding: '10px 4px',
-            fontSize: 12,
-            fontWeight: activeSidebarTab === 'validation' ? 600 : 400,
+            padding: '6px 2px',
+            fontSize: 11,
+            fontWeight: activeSidebarTab === 'validation' ? 600 : 500,
+            borderRadius: 'var(--radius-xs)',
             color:
-              activeSidebarTab === 'validation'
-                ? 'var(--accent-primary)'
-                : errorCount > 0
-                ? 'var(--accent-rose)'
-                : 'var(--text-secondary)',
-            borderBottom:
-              activeSidebarTab === 'validation'
-                ? '2px solid var(--accent-primary)'
-                : '2px solid transparent',
+              activeSidebarTab === 'validation' ? '#ffffff' : 'var(--text-secondary)',
+            background:
+              activeSidebarTab === 'validation' ? 'var(--bg-surface-elevated)' : 'transparent',
+            border: activeSidebarTab === 'validation' ? '1px solid var(--border-color)' : '1px solid transparent',
             gap: 4
           }}
-          title="Validation Diagnostics"
+          title="Topological QA/QC & Diagnostics"
         >
-          <ShieldCheck size={15} />
-          <span>Health</span>
+          <ShieldCheck size={13} style={{ color: errorCount > 0 ? 'var(--accent-rose)' : 'inherit' }} />
+          <span>QA/QC</span>
           {(errorCount > 0 || warningCount > 0) && (
             <span
-              className={errorCount > 0 ? 'badge badge-error' : 'badge badge-warning'}
-              style={{ fontSize: 9, padding: '0 4px' }}
+              style={{
+                fontSize: 9,
+                fontFamily: 'var(--font-mono)',
+                padding: '0 3px',
+                background: errorCount > 0 ? 'rgba(244, 63, 94, 0.2)' : 'rgba(245, 158, 11, 0.2)',
+                color: errorCount > 0 ? 'var(--accent-rose)' : 'var(--accent-amber)',
+                borderRadius: 'var(--radius-xs)'
+              }}
             >
               {errorCount + warningCount}
             </span>
           )}
         </button>
 
-        {/* Summary Tab */}
+        {/* Analytics Tab */}
         <button
           onClick={() => setActiveSidebarTab('summary')}
-          className="btn-ghost"
           style={{
             flex: 1,
-            borderRadius: 0,
-            padding: '10px 4px',
-            fontSize: 12,
-            fontWeight: activeSidebarTab === 'summary' ? 600 : 400,
+            padding: '6px 2px',
+            fontSize: 11,
+            fontWeight: activeSidebarTab === 'summary' ? 600 : 500,
+            borderRadius: 'var(--radius-xs)',
             color:
-              activeSidebarTab === 'summary' ? 'var(--accent-primary)' : 'var(--text-secondary)',
-            borderBottom:
-              activeSidebarTab === 'summary' ? '2px solid var(--accent-primary)' : '2px solid transparent',
+              activeSidebarTab === 'summary' ? '#ffffff' : 'var(--text-secondary)',
+            background:
+              activeSidebarTab === 'summary' ? 'var(--bg-surface-elevated)' : 'transparent',
+            border: activeSidebarTab === 'summary' ? '1px solid var(--border-color)' : '1px solid transparent',
             gap: 4
           }}
-          title="Dataset Summary & Statistics"
+          title="Dataset Spatial Statistics"
         >
-          <BarChart3 size={15} />
+          <BarChart3 size={13} style={{ color: activeSidebarTab === 'summary' ? 'var(--accent-amber)' : 'inherit' }} />
           <span>Stats</span>
         </button>
 
         {/* Search Tab */}
         <button
           onClick={() => setActiveSidebarTab('search')}
-          className="btn-ghost"
           style={{
             flex: 1,
-            borderRadius: 0,
-            padding: '10px 4px',
-            fontSize: 12,
-            fontWeight: activeSidebarTab === 'search' ? 600 : 400,
+            padding: '6px 2px',
+            fontSize: 11,
+            fontWeight: activeSidebarTab === 'search' ? 600 : 500,
+            borderRadius: 'var(--radius-xs)',
             color:
-              activeSidebarTab === 'search' ? 'var(--accent-primary)' : 'var(--text-secondary)',
-            borderBottom:
-              activeSidebarTab === 'search' ? '2px solid var(--accent-primary)' : '2px solid transparent',
+              activeSidebarTab === 'search' ? '#ffffff' : 'var(--text-secondary)',
+            background:
+              activeSidebarTab === 'search' ? 'var(--bg-surface-elevated)' : 'transparent',
+            border: activeSidebarTab === 'search' ? '1px solid var(--border-color)' : '1px solid transparent',
             gap: 4
           }}
-          title="Fuzzy Search"
+          title="Attribute Search"
         >
-          <Search size={15} />
-          <span>Search</span>
+          <Search size={13} style={{ color: activeSidebarTab === 'search' ? 'var(--accent-indigo)' : 'inherit' }} />
+          <span>Query</span>
         </button>
       </div>
 
@@ -203,28 +210,28 @@ export const Sidebar: FC = () => {
       {datasets.length > 0 && (
         <div
           style={{
-            padding: '8px 16px',
+            padding: '6px 14px',
             borderTop: '1px solid var(--border-color)',
-            background: 'var(--bg-surface-elevated)',
+            background: 'var(--bg-surface)',
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center'
           }}
         >
-          <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>
-            {datasets.length} dataset{datasets.length !== 1 ? 's' : ''} loaded
+          <span style={{ fontSize: 11, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
+            {datasets.length} LAYER{datasets.length !== 1 ? 'S' : ''} ACTIVE
           </span>
           <button
             onClick={() => {
-              if (window.confirm('Clear all datasets and reset map?')) {
+              if (window.confirm('Clear all spatial datasets and reset map workspace?')) {
                 resetAll();
               }
             }}
             className="btn-ghost"
-            style={{ fontSize: 11, color: 'var(--accent-rose)', padding: '4px 8px' }}
+            style={{ fontSize: 11, color: 'var(--accent-rose)', padding: '2px 6px', gap: 4 }}
           >
-            <RotateCcw size={12} />
-            <span>Clear All</span>
+            <RotateCcw size={11} />
+            <span>Reset Workspace</span>
           </button>
         </div>
       )}

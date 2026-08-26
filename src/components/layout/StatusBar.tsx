@@ -8,8 +8,7 @@ export const StatusBar: FC = () => {
     datasets,
     activeDatasetId,
     cursorCoordinates,
-    activeTool,
-    measurementState
+    activeTool
   } = useAppStore();
 
   const [copied, setCopied] = useState(false);
@@ -38,84 +37,87 @@ export const StatusBar: FC = () => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: '0 16px',
-        fontSize: 12,
+        padding: '0 14px',
+        fontSize: 11,
         color: 'var(--text-secondary)',
+        fontFamily: 'var(--font-mono)',
         zIndex: 20
       }}
     >
       {/* Left side: CRS & Mode */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <Globe size={14} style={{ color: 'var(--accent-primary)' }} />
-          <span>CRS:</span>
-          <strong style={{ color: 'var(--text-primary)' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+          <Globe size={13} style={{ color: 'var(--accent-cyan)' }} />
+          <span style={{ color: 'var(--text-muted)' }}>CRS:</span>
+          <strong style={{ color: 'var(--text-primary)', fontWeight: 600 }}>
             {activeDataset?.detectedCrs || 'EPSG:4326 (WGS 84)'}
           </strong>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <Layers size={14} style={{ color: 'var(--accent-emerald)' }} />
-          <span>Active Features:</span>
-          <strong style={{ color: 'var(--text-primary)' }}>{totalFeatures}</strong>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+          <Layers size={13} style={{ color: 'var(--accent-emerald)' }} />
+          <span style={{ color: 'var(--text-muted)' }}>ACTIVE FEATURES:</span>
+          <strong style={{ color: 'var(--text-primary)', fontWeight: 600 }}>{totalFeatures}</strong>
         </div>
 
         {activeTool !== 'select' && (
           <div
             className="badge badge-info"
-            style={{ display: 'flex', alignItems: 'center', gap: 4 }}
+            style={{ display: 'flex', alignItems: 'center', gap: 4, height: 18 }}
           >
-            <Activity size={12} />
-            <span>Mode: {activeTool.replace('-', ' ').toUpperCase()}</span>
+            <Activity size={10} />
+            <span>TOOL: {activeTool.replace('-', ' ').toUpperCase()}</span>
           </div>
         )}
       </div>
 
       {/* Right side: Cursor Coordinates with One-Click Copy */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
         {cursorCoordinates ? (
           <div
             onClick={handleCopy}
-            title="Click to copy coordinates"
+            title="Click to copy geographic coordinates"
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: 6,
+              gap: 5,
               cursor: 'pointer',
-              padding: '2px 8px',
-              borderRadius: 'var(--radius-sm)',
+              padding: '1px 6px',
+              borderRadius: 'var(--radius-xs)',
               background: 'var(--bg-surface)',
-              border: '1px solid var(--border-color)',
-              fontFamily: 'var(--font-mono)'
+              border: '1px solid var(--border-color)'
             }}
           >
-            <MapPin size={13} style={{ color: 'var(--accent-cyan)' }} />
-            <span>
+            <MapPin size={11} style={{ color: 'var(--accent-cyan)' }} />
+            <span style={{ color: 'var(--text-primary)' }}>
               {dmsMode
-                ? `${decimalToDMS(cursorCoordinates.lat, true)} | ${decimalToDMS(cursorCoordinates.lng, false)}`
+                ? `${decimalToDMS(cursorCoordinates.lat, true)} ${decimalToDMS(cursorCoordinates.lng, false)}`
                 : formatCoordinates(cursorCoordinates.lng, cursorCoordinates.lat)}
             </span>
             {copied ? (
-              <Check size={13} style={{ color: 'var(--accent-emerald)' }} />
+              <Check size={11} style={{ color: 'var(--accent-emerald)' }} />
             ) : (
-              <Copy size={13} style={{ opacity: 0.6 }} />
+              <Copy size={11} style={{ opacity: 0.5 }} />
             )}
           </div>
         ) : (
-          <span style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
-            Hover over map for coordinates
+          <span style={{ color: 'var(--text-muted)', fontSize: 10 }}>
+            HOVER OVER MAP TO INSPECT COORDINATES
           </span>
         )}
 
         <button
           onClick={() => setDmsMode(!dmsMode)}
           style={{
-            fontSize: 11,
-            color: dmsMode ? 'var(--accent-primary)' : 'var(--text-muted)',
+            fontSize: 10,
+            color: dmsMode ? 'var(--accent-cyan)' : 'var(--text-muted)',
             fontWeight: 600,
-            textDecoration: 'underline'
+            padding: '1px 4px',
+            borderRadius: 'var(--radius-xs)',
+            border: '1px solid var(--border-color)',
+            background: 'var(--bg-surface)'
           }}
-          title="Toggle Decimal / DMS coordinate display"
+          title="Toggle Decimal Degrees / Degrees Minutes Seconds"
         >
           {dmsMode ? 'DEC' : 'DMS'}
         </button>

@@ -1,5 +1,5 @@
 import { type FC } from 'react';
-import { Ruler, Pentagon, Trash2, Check } from 'lucide-react';
+import { Ruler, Pentagon, Trash2 } from 'lucide-react';
 import { useAppStore } from '../../app/store';
 
 export const MeasureToolbar: FC = () => {
@@ -7,7 +7,6 @@ export const MeasureToolbar: FC = () => {
     activeTool,
     measurementState,
     startMeasurement,
-    finishMeasurement,
     clearMeasurement
   } = useAppStore();
 
@@ -17,16 +16,15 @@ export const MeasureToolbar: FC = () => {
 
   return (
     <div
-      className="glass-panel"
+      className="map-hud-control"
       style={{
         position: 'absolute',
-        top: 16,
-        left: 16,
-        borderRadius: 'var(--radius-md)',
-        padding: 4,
+        top: 14,
+        left: 14,
+        padding: 3,
         display: 'flex',
         alignItems: 'center',
-        gap: 4,
+        gap: 3,
         zIndex: 10
       }}
     >
@@ -40,10 +38,10 @@ export const MeasureToolbar: FC = () => {
           }
         }}
         className={isMeasuringDistance ? 'btn-primary' : 'btn-ghost'}
-        style={{ padding: '6px 10px', fontSize: 12 }}
-        title="Measure Distance (Click points on map)"
+        style={{ padding: '5px 8px', fontSize: 11, height: 26 }}
+        title="Measure Geodesic Distance (Click points along path)"
       >
-        <Ruler size={15} />
+        <Ruler size={13} />
         <span>Distance</span>
       </button>
 
@@ -57,24 +55,24 @@ export const MeasureToolbar: FC = () => {
           }
         }}
         className={isMeasuringArea ? 'btn-primary' : 'btn-ghost'}
-        style={{ padding: '6px 10px', fontSize: 12 }}
-        title="Measure Area (Click vertices of polygon)"
+        style={{ padding: '5px 8px', fontSize: 11, height: 26 }}
+        title="Measure Geodesic Polygon Area (Click polygon vertices)"
       >
-        <Pentagon size={15} />
+        <Pentagon size={13} />
         <span>Area</span>
       </button>
 
       {/* Clear Measurement */}
       {isMeasuring && measurementState.points.length > 0 && (
         <>
-          <div style={{ width: 1, height: 18, background: 'var(--border-color)', margin: '0 2px' }} />
+          <div style={{ width: 1, height: 16, background: 'var(--border-color)', margin: '0 1px' }} />
           <button
             onClick={() => clearMeasurement()}
             className="btn-ghost"
-            style={{ padding: '6px', color: 'var(--accent-rose)' }}
-            title="Clear measurement"
+            style={{ padding: '4px 6px', color: 'var(--accent-rose)', height: 26 }}
+            title="Reset active measurement"
           >
-            <Trash2 size={15} />
+            <Trash2 size={13} />
           </button>
         </>
       )}

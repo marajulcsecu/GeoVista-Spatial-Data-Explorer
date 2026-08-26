@@ -14,9 +14,9 @@ export const ValidationPanel: FC = () => {
 
   if (!activeDataset) {
     return (
-      <div style={{ padding: '24px 16px', textAlign: 'center', color: 'var(--text-muted)' }}>
-        <ShieldCheck size={32} style={{ margin: '0 auto 10px', opacity: 0.4 }} />
-        <p style={{ fontSize: 13 }}>No dataset loaded.</p>
+      <div style={{ padding: '32px 16px', textAlign: 'center', color: 'var(--text-muted)' }}>
+        <ShieldCheck size={28} style={{ margin: '0 auto 8px', opacity: 0.3 }} />
+        <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-secondary)' }}>No dataset loaded</p>
       </div>
     );
   }
@@ -25,53 +25,54 @@ export const ValidationPanel: FC = () => {
   const { errors, warnings, info, validFeaturesCount, invalidFeaturesCount } = validationReport;
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 12, padding: '14px 16px' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 8, padding: '10px 12px' }}>
       {/* Overview Card */}
       <div
         style={{
           background: errors.length === 0 ? 'rgba(16, 185, 129, 0.08)' : 'rgba(244, 63, 94, 0.08)',
-          border: `1px solid ${errors.length === 0 ? 'rgba(16, 185, 129, 0.3)' : 'rgba(244, 63, 94, 0.3)'}`,
-          borderRadius: 'var(--radius-md)',
-          padding: 12,
+          border: `1px solid ${errors.length === 0 ? 'rgba(16, 185, 129, 0.25)' : 'rgba(244, 63, 94, 0.25)'}`,
+          borderRadius: 'var(--radius-xs)',
+          padding: '8px 10px',
           display: 'flex',
           alignItems: 'center',
-          gap: 12
+          gap: 10
         }}
       >
         {errors.length === 0 ? (
-          <CheckCircle2 size={24} style={{ color: '#10b981', flexShrink: 0 }} />
+          <CheckCircle2 size={20} style={{ color: '#10b981', flexShrink: 0 }} />
         ) : (
-          <XCircle size={24} style={{ color: '#f43f5e', flexShrink: 0 }} />
+          <XCircle size={20} style={{ color: '#f43f5e', flexShrink: 0 }} />
         )}
         <div>
-          <div style={{ fontWeight: 600, fontSize: 13, color: 'var(--text-primary)' }}>
-            {errors.length === 0 ? 'Dataset Valid & Renderable' : 'Validation Issues Detected'}
+          <div style={{ fontWeight: 600, fontSize: 12, color: 'var(--text-primary)' }}>
+            {errors.length === 0 ? 'Topology & Coordinates Valid' : 'Validation Issues Detected'}
           </div>
-          <div style={{ fontSize: 11, color: 'var(--text-secondary)', marginTop: 2 }}>
-            {validFeaturesCount} valid features rendered
-            {invalidFeaturesCount > 0 && `, ${invalidFeaturesCount} skipped`}
+          <div style={{ fontSize: 10, color: 'var(--text-secondary)', marginTop: 1, fontFamily: 'var(--font-mono)' }}>
+            {validFeaturesCount} VALID FEATURES RENDERED
+            {invalidFeaturesCount > 0 && ` • ${invalidFeaturesCount} SKIPPED`}
           </div>
         </div>
       </div>
 
       {/* Metric Breakdown Badges */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 6 }}>
         <div
           style={{
             background: 'var(--bg-surface)',
             border: '1px solid var(--border-color)',
-            borderRadius: 'var(--radius-sm)',
-            padding: '8px',
+            borderRadius: 'var(--radius-xs)',
+            padding: '6px',
             textAlign: 'center'
           }}
         >
-          <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>Errors</div>
+          <div style={{ fontSize: 10, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>ERRORS</div>
           <div
             style={{
-              fontSize: 16,
+              fontSize: 14,
               fontWeight: 700,
               color: errors.length > 0 ? '#f43f5e' : 'var(--text-primary)',
-              marginTop: 2
+              marginTop: 1,
+              fontFamily: 'var(--font-mono)'
             }}
           >
             {errors.length}
@@ -82,18 +83,19 @@ export const ValidationPanel: FC = () => {
           style={{
             background: 'var(--bg-surface)',
             border: '1px solid var(--border-color)',
-            borderRadius: 'var(--radius-sm)',
-            padding: '8px',
+            borderRadius: 'var(--radius-xs)',
+            padding: '6px',
             textAlign: 'center'
           }}
         >
-          <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>Warnings</div>
+          <div style={{ fontSize: 10, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>WARNINGS</div>
           <div
             style={{
-              fontSize: 16,
+              fontSize: 14,
               fontWeight: 700,
               color: warnings.length > 0 ? '#f59e0b' : 'var(--text-primary)',
-              marginTop: 2
+              marginTop: 1,
+              fontFamily: 'var(--font-mono)'
             }}
           >
             {warnings.length}
@@ -104,37 +106,37 @@ export const ValidationPanel: FC = () => {
           style={{
             background: 'var(--bg-surface)',
             border: '1px solid var(--border-color)',
-            borderRadius: 'var(--radius-sm)',
-            padding: '8px',
+            borderRadius: 'var(--radius-xs)',
+            padding: '6px',
             textAlign: 'center'
           }}
         >
-          <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>Info Notes</div>
-          <div style={{ fontSize: 16, fontWeight: 700, color: '#3b82f6', marginTop: 2 }}>
+          <div style={{ fontSize: 10, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>NOTES</div>
+          <div style={{ fontSize: 14, fontWeight: 700, color: '#38bdf8', marginTop: 1, fontFamily: 'var(--font-mono)' }}>
             {info.length}
           </div>
         </div>
       </div>
 
       {/* Messages List */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 4 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 2 }}>
         {/* Errors */}
         {errors.map((err) => (
           <div
             key={err.id}
             style={{
-              padding: '10px 12px',
-              background: 'rgba(244, 63, 94, 0.1)',
-              border: '1px solid rgba(244, 63, 94, 0.3)',
-              borderRadius: 'var(--radius-sm)',
-              fontSize: 12
+              padding: '8px 10px',
+              background: 'rgba(244, 63, 94, 0.08)',
+              border: '1px solid rgba(244, 63, 94, 0.25)',
+              borderRadius: 'var(--radius-xs)',
+              fontSize: 11
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#fb7185', fontWeight: 600 }}>
-              <XCircle size={14} />
+            <div style={{ display: 'flex', alignItems: 'center', gap: 5, color: '#fb7185', fontWeight: 600 }}>
+              <XCircle size={13} />
               <span>{err.title}</span>
             </div>
-            <div style={{ color: 'var(--text-secondary)', marginTop: 4 }}>{err.message}</div>
+            <div style={{ color: 'var(--text-secondary)', marginTop: 2 }}>{err.message}</div>
           </div>
         ))}
 
@@ -143,18 +145,18 @@ export const ValidationPanel: FC = () => {
           <div
             key={warn.id}
             style={{
-              padding: '10px 12px',
-              background: 'rgba(245, 158, 11, 0.1)',
-              border: '1px solid rgba(245, 158, 11, 0.3)',
-              borderRadius: 'var(--radius-sm)',
-              fontSize: 12
+              padding: '8px 10px',
+              background: 'rgba(245, 158, 11, 0.08)',
+              border: '1px solid rgba(245, 158, 11, 0.25)',
+              borderRadius: 'var(--radius-xs)',
+              fontSize: 11
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#fbbf24', fontWeight: 600 }}>
-              <AlertTriangle size={14} />
+            <div style={{ display: 'flex', alignItems: 'center', gap: 5, color: '#fbbf24', fontWeight: 600 }}>
+              <AlertTriangle size={13} />
               <span>{warn.title}</span>
             </div>
-            <div style={{ color: 'var(--text-secondary)', marginTop: 4 }}>{warn.message}</div>
+            <div style={{ color: 'var(--text-secondary)', marginTop: 2 }}>{warn.message}</div>
           </div>
         ))}
 
@@ -163,18 +165,18 @@ export const ValidationPanel: FC = () => {
           <div
             key={inf.id}
             style={{
-              padding: '10px 12px',
-              background: 'rgba(59, 130, 246, 0.08)',
-              border: '1px solid rgba(59, 130, 246, 0.2)',
-              borderRadius: 'var(--radius-sm)',
-              fontSize: 12
+              padding: '8px 10px',
+              background: 'rgba(56, 189, 248, 0.08)',
+              border: '1px solid rgba(56, 189, 248, 0.2)',
+              borderRadius: 'var(--radius-xs)',
+              fontSize: 11
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: '#60a5fa', fontWeight: 600 }}>
-              <Info size={14} />
+            <div style={{ display: 'flex', alignItems: 'center', gap: 5, color: '#38bdf8', fontWeight: 600 }}>
+              <Info size={13} />
               <span>{inf.title}</span>
             </div>
-            <div style={{ color: 'var(--text-secondary)', marginTop: 4 }}>{inf.message}</div>
+            <div style={{ color: 'var(--text-secondary)', marginTop: 2 }}>{inf.message}</div>
           </div>
         ))}
       </div>

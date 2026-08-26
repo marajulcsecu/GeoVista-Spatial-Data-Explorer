@@ -1,81 +1,85 @@
 /* ==========================================================================
-   GeoVista Design System - CSS Tokens & Global Styles
+   GeoVista Enterprise GIS Design System - Precision Tokens & Workstation UI
    ========================================================================== */
 
 :root {
-  /* Dark Mode (Default) */
-  --bg-app: #090d16;
-  --bg-sidebar: #0f172a;
-  --bg-surface: #141f36;
-  --bg-surface-elevated: #1e293b;
-  --bg-surface-translucent: rgba(20, 31, 54, 0.85);
-  --bg-glass: rgba(15, 23, 42, 0.75);
-  --bg-input: #0b1324;
-  --bg-hover: #1e2e4f;
-  --bg-active: #253860;
+  /* Workstation Dark Theme (Default Enterprise Mode) */
+  --bg-app: #080b11;
+  --bg-sidebar: #0d121c;
+  --bg-surface: #121927;
+  --bg-surface-elevated: #182235;
+  --bg-surface-translucent: rgba(18, 25, 39, 0.88);
+  --bg-glass: rgba(13, 18, 28, 0.82);
+  --bg-input: #090d15;
+  --bg-hover: rgba(255, 255, 255, 0.05);
+  --bg-active: rgba(56, 189, 248, 0.12);
   
   --border-color: rgba(255, 255, 255, 0.08);
-  --border-focus: #3b82f6;
-  --border-strong: rgba(255, 255, 255, 0.16);
+  --border-subtle: rgba(255, 255, 255, 0.04);
+  --border-focus: #38bdf8;
+  --border-strong: rgba(255, 255, 255, 0.15);
 
-  --text-primary: #f8fafc;
+  --text-primary: #f1f5f9;
   --text-secondary: #94a3b8;
   --text-muted: #64748b;
-  --text-inverse: #090d16;
+  --text-inverse: #080b11;
 
-  /* Accent Colors */
-  --accent-primary: #3b82f6;
-  --accent-primary-hover: #2563eb;
-  --accent-primary-glow: rgba(59, 130, 246, 0.35);
-  --accent-cyan: #06b6d4;
+  /* GIS Workstation Accents */
+  --accent-primary: #0284c7;
+  --accent-primary-hover: #0369a1;
+  --accent-primary-glow: rgba(2, 132, 199, 0.25);
+  --accent-cyan: #38bdf8;
   --accent-emerald: #10b981;
   --accent-amber: #f59e0b;
   --accent-rose: #f43f5e;
-  --accent-purple: #8b5cf6;
+  --accent-indigo: #6366f1;
 
-  /* Typography */
-  --font-brand: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  /* Precision Engineering Typography */
+  --font-brand: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Roboto Mono', monospace;
 
-  /* Shadows & Radius */
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 12px -1px rgba(0, 0, 0, 0.45);
-  --shadow-lg: 0 10px 25px -3px rgba(0, 0, 0, 0.6);
-  --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.25);
+  /* Elevation Shadows & Engineering Radii */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 14px -1px rgba(0, 0, 0, 0.55), 0 2px 6px -2px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 12px 28px -4px rgba(0, 0, 0, 0.7), 0 4px 12px -2px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 16px rgba(56, 189, 248, 0.2);
 
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
+  /* Precision Radii (Structured, non-pill) */
+  --radius-xs: 3px;
+  --radius-sm: 5px;
+  --radius-md: 7px;
+  --radius-lg: 10px;
   --radius-full: 9999px;
 
-  /* Header & Panel Heights */
-  --header-height: 58px;
-  --status-bar-height: 34px;
-  --sidebar-width: 360px;
-  --inspector-width: 340px;
-  --table-height: 280px;
+  /* Workstation Metrics */
+  --header-height: 52px;
+  --status-bar-height: 28px;
+  --sidebar-width: 350px;
+  --inspector-width: 330px;
+  --table-height: 270px;
 
   /* Transitions */
-  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-smooth: 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-fast: 0.12s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 [data-theme="light"] {
-  --bg-app: #f1f5f9;
+  --bg-app: #f4f6f9;
   --bg-sidebar: #ffffff;
   --bg-surface: #ffffff;
   --bg-surface-elevated: #f8fafc;
-  --bg-surface-translucent: rgba(255, 255, 255, 0.88);
-  --bg-glass: rgba(255, 255, 255, 0.82);
+  --bg-surface-translucent: rgba(255, 255, 255, 0.92);
+  --bg-glass: rgba(255, 255, 255, 0.88);
   --bg-input: #f1f5f9;
-  --bg-hover: #e2e8f0;
-  --bg-active: #cbd5e1;
+  --bg-hover: rgba(0, 0, 0, 0.04);
+  --bg-active: rgba(2, 132, 199, 0.08);
 
-  --border-color: rgba(0, 0, 0, 0.08);
-  --border-focus: #2563eb;
-  --border-strong: rgba(0, 0, 0, 0.15);
+  --border-color: #e2e8f0;
+  --border-subtle: #f1f5f9;
+  --border-focus: #0284c7;
+  --border-strong: #cbd5e1;
 
   --text-primary: #0f172a;
   --text-secondary: #475569;
@@ -83,9 +87,9 @@
   --text-inverse: #ffffff;
 
   --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.06);
-  --shadow-md: 0 4px 14px -1px rgba(0, 0, 0, 0.08);
-  --shadow-lg: 0 12px 30px -4px rgba(0, 0, 0, 0.12);
-  --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.15);
+  --shadow-md: 0 4px 14px -1px rgba(0, 0, 0, 0.08), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 12px 28px -4px rgba(0, 0, 0, 0.12);
+  --shadow-glow: 0 0 16px rgba(2, 132, 199, 0.15);
 }
 
 /* Base Resets */
@@ -102,16 +106,17 @@ html, body, #root {
   font-family: var(--font-sans);
   background-color: var(--bg-app);
   color: var(--text-primary);
-  font-size: 14px;
-  line-height: 1.5;
+  font-size: 13px;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom Scrollbars */
+/* Precision Scrollbars */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {
@@ -120,14 +125,14 @@ html, body, #root {
 
 ::-webkit-scrollbar-thumb {
   background: var(--border-strong);
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-xs);
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text-muted);
 }
 
-/* Button & Control Resets */
+/* Precision Inputs & Resets */
 button {
   font-family: inherit;
   font-size: inherit;
@@ -139,29 +144,31 @@ button {
   align-items: center;
   justify-content: center;
   transition: var(--transition-fast);
+  user-select: none;
 }
 
-button:focus-visible, input:focus-visible, select:focus-visible {
+button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
   outline: 2px solid var(--border-focus);
-  outline-offset: 2px;
+  outline-offset: 1px;
 }
 
 input, select, textarea {
   font-family: inherit;
-  font-size: inherit;
+  font-size: 12px;
   color: var(--text-primary);
   background: var(--bg-input);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-sm);
-  padding: 6px 10px;
+  padding: 5px 8px;
   transition: var(--transition-fast);
 }
 
 input:focus, select:focus, textarea:focus {
   border-color: var(--border-focus);
+  box-shadow: 0 0 0 1px var(--border-focus);
 }
 
-/* Common UI Utility Classes */
+/* Enterprise Glass Panels */
 .glass-panel {
   background: var(--bg-glass);
   backdrop-filter: blur(16px);
@@ -170,19 +177,28 @@ input:focus, select:focus, textarea:focus {
   box-shadow: var(--shadow-md);
 }
 
+/* Workstation Button Classes */
 .btn-primary {
-  background: var(--accent-primary);
+  background: #0284c7;
   color: #ffffff;
-  font-weight: 500;
-  padding: 8px 16px;
+  font-weight: 600;
+  font-size: 12px;
+  padding: 6px 12px;
   border-radius: var(--radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   box-shadow: var(--shadow-sm);
-  gap: 8px;
+  gap: 6px;
+  letter-spacing: 0.01em;
 }
 
 .btn-primary:hover {
-  background: var(--accent-primary-hover);
-  box-shadow: var(--shadow-glow);
+  background: #0369a1;
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 12px rgba(2, 132, 199, 0.35);
+}
+
+.btn-primary:active {
+  transform: translateY(1px);
 }
 
 .btn-secondary {
@@ -190,21 +206,28 @@ input:focus, select:focus, textarea:focus {
   color: var(--text-primary);
   border: 1px solid var(--border-color);
   font-weight: 500;
-  padding: 8px 14px;
+  font-size: 12px;
+  padding: 6px 11px;
   border-radius: var(--radius-sm);
-  gap: 8px;
+  gap: 6px;
 }
 
 .btn-secondary:hover {
   background: var(--bg-hover);
   border-color: var(--border-strong);
+  color: #ffffff;
+}
+
+.btn-secondary:active {
+  transform: translateY(1px);
 }
 
 .btn-ghost {
   color: var(--text-secondary);
-  padding: 6px 10px;
+  padding: 5px 8px;
   border-radius: var(--radius-sm);
-  gap: 6px;
+  font-size: 12px;
+  gap: 5px;
 }
 
 .btn-ghost:hover {
@@ -213,12 +236,13 @@ input:focus, select:focus, textarea:focus {
 }
 
 .btn-icon {
-  width: 34px;
-  height: 34px;
+  width: 30px;
+  height: 30px;
   border-radius: var(--radius-sm);
   color: var(--text-secondary);
   background: var(--bg-surface);
   border: 1px solid var(--border-color);
+  flex-shrink: 0;
 }
 
 .btn-icon:hover {
@@ -227,64 +251,92 @@ input:focus, select:focus, textarea:focus {
   border-color: var(--border-strong);
 }
 
+.btn-icon:active {
+  transform: translateY(1px);
+}
+
+/* Precision Tech Badges */
 .badge {
   display: inline-flex;
   align-items: center;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
-  padding: 2px 8px;
-  border-radius: var(--radius-full);
-  letter-spacing: 0.02em;
+  padding: 2px 6px;
+  border-radius: var(--radius-xs);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-family: var(--font-mono);
 }
 
 .badge-info {
-  background: rgba(59, 130, 246, 0.15);
-  color: #60a5fa;
-  border: 1px solid rgba(59, 130, 246, 0.3);
+  background: rgba(2, 132, 199, 0.12);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.25);
 }
 
 .badge-success {
-  background: rgba(16, 185, 129, 0.15);
+  background: rgba(16, 185, 129, 0.12);
   color: #34d399;
-  border: 1px solid rgba(16, 185, 129, 0.3);
+  border: 1px solid rgba(16, 185, 129, 0.25);
 }
 
 .badge-warning {
-  background: rgba(245, 158, 11, 0.15);
+  background: rgba(245, 158, 11, 0.12);
   color: #fbbf24;
-  border: 1px solid rgba(245, 158, 11, 0.3);
+  border: 1px solid rgba(245, 158, 11, 0.25);
 }
 
 .badge-error {
-  background: rgba(244, 63, 94, 0.15);
+  background: rgba(244, 63, 94, 0.12);
   color: #fb7185;
-  border: 1px solid rgba(244, 63, 94, 0.3);
+  border: 1px solid rgba(244, 63, 94, 0.25);
 }
 
-/* Animations */
-@keyframes pulseGlow {
-  0%, 100% {
-    box-shadow: 0 0 0 0 var(--accent-primary-glow);
-  }
-  50% {
-    box-shadow: 0 0 0 8px transparent;
-  }
+/* GIS Map Navigation HUD Elements */
+.map-hud-control {
+  background: var(--bg-surface-translucent);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+  color: var(--text-primary);
 }
 
-.animate-pulse-glow {
-  animation: pulseGlow 2s infinite;
+/* Custom Range Input (Clean Slider) */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: var(--radius-xs);
+  outline: none;
+  padding: 0;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(4px); }
-  to { opacity: 1; transform: translateY(0); }
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: var(--radius-xs);
+  background: #38bdf8;
+  cursor: pointer;
+  border: 1px solid #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
-.animate-fade-in {
-  animation: fadeIn var(--transition-normal) forwards;
+input[type="range"]::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: var(--radius-xs);
+  background: #38bdf8;
+  cursor: pointer;
+  border: 1px solid #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
-/* MapLibre Container Override */
+/* MapLibre Container & Popup Override */
 .maplibregl-map {
   font-family: var(--font-sans) !important;
 }
@@ -292,10 +344,11 @@ input:focus, select:focus, textarea:focus {
 .maplibregl-popup-content {
   background: var(--bg-surface) !important;
   color: var(--text-primary) !important;
-  border: 1px solid var(--border-color) !important;
+  border: 1px solid var(--border-strong) !important;
   border-radius: var(--radius-md) !important;
   box-shadow: var(--shadow-lg) !important;
-  padding: 12px 16px !important;
+  padding: 12px 14px !important;
+  font-size: 12px !important;
 }
 
 .maplibregl-popup-anchor-top .maplibregl-popup-tip {
@@ -309,4 +362,32 @@ input:focus, select:focus, textarea:focus {
 }
 .maplibregl-popup-anchor-right .maplibregl-popup-tip {
   border-left-color: var(--bg-surface) !important;
+}
+
+.maplibregl-ctrl-group {
+  background: var(--bg-surface-translucent) !important;
+  border: 1px solid var(--border-color) !important;
+  border-radius: var(--radius-sm) !important;
+  box-shadow: var(--shadow-md) !important;
+  backdrop-filter: blur(12px) !important;
+}
+
+.maplibregl-ctrl-group button {
+  border-bottom: 1px solid var(--border-color) !important;
+}
+.maplibregl-ctrl-group button:last-child {
+  border-bottom: none !important;
+}
+.maplibregl-ctrl-group button:hover {
+  background-color: var(--bg-hover) !important;
+}
+
+/* Animation utilities */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(3px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn var(--transition-normal) forwards;
 }

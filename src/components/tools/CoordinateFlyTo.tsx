@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, type FC, type FormEvent } from 'react';
-import { Navigation, MapPin, X, ArrowRight } from 'lucide-react';
+import { Navigation, X, ArrowRight, Crosshair } from 'lucide-react';
 import { useAppStore } from '../../app/store';
 import { isValidWgs84 } from '../../utils/coordinates';
 
@@ -30,7 +30,7 @@ export const CoordinateFlyTo: FC = () => {
     const lng = parseFloat(lngInput.trim());
 
     if (isNaN(lat) || isNaN(lng)) {
-      setError('Please enter valid numeric coordinates.');
+      setError('Enter valid decimal coordinates.');
       return;
     }
 
@@ -47,33 +47,32 @@ export const CoordinateFlyTo: FC = () => {
     <div ref={containerRef} style={{ position: 'relative' }}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="glass-panel"
+        className="map-hud-control"
         style={{
-          padding: '6px 12px',
-          borderRadius: 'var(--radius-md)',
-          fontSize: 12,
+          padding: '5px 10px',
+          fontSize: 11,
           display: 'flex',
           alignItems: 'center',
           gap: 6,
-          fontWeight: 500
+          fontWeight: 500,
+          height: 28
         }}
         title="Jump to specific Latitude/Longitude"
       >
-        <Navigation size={14} style={{ color: 'var(--accent-cyan)' }} />
+        <Crosshair size={13} style={{ color: 'var(--accent-cyan)' }} />
         <span>Go to Coord</span>
       </button>
 
       {isOpen && (
         <form
           onSubmit={handleFly}
-          className="glass-panel"
+          className="map-hud-control"
           style={{
             position: 'absolute',
-            bottom: 'calc(100% + 6px)',
+            bottom: 'calc(100% + 5px)',
             right: 0,
-            width: 240,
-            borderRadius: 'var(--radius-md)',
-            padding: 12,
+            width: 230,
+            padding: 10,
             zIndex: 30,
             display: 'flex',
             flexDirection: 'column',
@@ -81,20 +80,22 @@ export const CoordinateFlyTo: FC = () => {
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <span style={{ fontSize: 12, fontWeight: 600 }}>Fly to Coordinate</span>
+            <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-primary)' }}>
+              Coordinate Navigation
+            </span>
             <button
               type="button"
               onClick={() => setIsOpen(false)}
               className="btn-ghost"
-              style={{ padding: 2 }}
+              style={{ padding: 2, height: 20, width: 20 }}
             >
-              <X size={14} />
+              <X size={12} />
             </button>
           </div>
 
           <div>
-            <label style={{ fontSize: 11, color: 'var(--text-muted)', display: 'block', marginBottom: 2 }}>
-              Latitude (-90 to 90)
+            <label style={{ fontSize: 10, color: 'var(--text-muted)', display: 'block', marginBottom: 2, fontFamily: 'var(--font-mono)' }}>
+              LATITUDE (WGS 84)
             </label>
             <input
               type="number"
@@ -102,14 +103,14 @@ export const CoordinateFlyTo: FC = () => {
               placeholder="e.g. 22.461664"
               value={latInput}
               onChange={(e) => setLatInput(e.target.value)}
-              style={{ width: '100%', fontSize: 12 }}
+              style={{ width: '100%', fontSize: 11, fontFamily: 'var(--font-mono)' }}
               required
             />
           </div>
 
           <div>
-            <label style={{ fontSize: 11, color: 'var(--text-muted)', display: 'block', marginBottom: 2 }}>
-              Longitude (-180 to 180)
+            <label style={{ fontSize: 10, color: 'var(--text-muted)', display: 'block', marginBottom: 2, fontFamily: 'var(--font-mono)' }}>
+              LONGITUDE (WGS 84)
             </label>
             <input
               type="number"
@@ -117,13 +118,13 @@ export const CoordinateFlyTo: FC = () => {
               placeholder="e.g. 91.789986"
               value={lngInput}
               onChange={(e) => setLngInput(e.target.value)}
-              style={{ width: '100%', fontSize: 12 }}
+              style={{ width: '100%', fontSize: 11, fontFamily: 'var(--font-mono)' }}
               required
             />
           </div>
 
           {error && (
-            <div style={{ fontSize: 11, color: 'var(--accent-rose)', lineHeight: 1.2 }}>
+            <div style={{ fontSize: 10, color: 'var(--accent-rose)', lineHeight: 1.2 }}>
               {error}
             </div>
           )}
@@ -131,10 +132,10 @@ export const CoordinateFlyTo: FC = () => {
           <button
             type="submit"
             className="btn-primary"
-            style={{ width: '100%', padding: '6px', fontSize: 12, marginTop: 4 }}
+            style={{ width: '100%', padding: '5px', fontSize: 11, marginTop: 2, justifyContent: 'center' }}
           >
-            <span>Navigate</span>
-            <ArrowRight size={14} />
+            <span>Jump to Location</span>
+            <ArrowRight size={12} />
           </button>
         </form>
       )}

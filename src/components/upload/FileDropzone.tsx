@@ -1,5 +1,5 @@
 import { useState, useRef, type FC, type DragEvent, type ChangeEvent } from 'react';
-import { UploadCloud, FileType, CheckCircle2, AlertTriangle, Loader2 } from 'lucide-react';
+import { Upload, FileCode, CheckCircle2, AlertTriangle, Loader2, Shield } from 'lucide-react';
 import { useAppStore } from '../../app/store';
 import { detectFormat } from '../../importers/detectFormat';
 import { importGeoJSON } from '../../importers/importGeoJSON';
@@ -50,7 +50,7 @@ export const FileDropzone: FC = () => {
         }
       } else {
         throw new Error(
-          `Unsupported file format for "${file.name}". Please upload .geojson, .zip (Shapefile), or .csv.`
+          `Unsupported file format for "${file.name}". Please upload standard GeoJSON (.json/.geojson), ESRI Shapefile (.zip), or Delimited CSV.`
         );
       }
     } catch (err: any) {
@@ -75,7 +75,7 @@ export const FileDropzone: FC = () => {
   };
 
   return (
-    <div style={{ padding: '14px 16px' }}>
+    <div style={{ padding: '12px 14px' }}>
       <div
         onDragOver={(e) => {
           e.preventDefault();
@@ -85,13 +85,13 @@ export const FileDropzone: FC = () => {
         onDrop={onDrop}
         onClick={() => fileInputRef.current?.click()}
         style={{
-          border: `2px dashed ${isDragging ? 'var(--accent-primary)' : 'var(--border-strong)'}`,
-          background: isDragging ? 'var(--bg-hover)' : 'var(--bg-surface)',
-          borderRadius: 'var(--radius-md)',
-          padding: '24px 16px',
+          border: `1px dashed ${isDragging ? 'var(--border-focus)' : 'var(--border-strong)'}`,
+          background: isDragging ? 'var(--bg-active)' : 'var(--bg-surface)',
+          borderRadius: 'var(--radius-sm)',
+          padding: '16px 12px',
           textAlign: 'center',
           cursor: isProcessing ? 'wait' : 'pointer',
-          transition: 'var(--transition-normal)',
+          transition: 'var(--transition-fast)',
           position: 'relative'
         }}
       >
@@ -104,47 +104,48 @@ export const FileDropzone: FC = () => {
           disabled={isProcessing}
         />
 
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10 }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
           <div
             style={{
-              width: 44,
-              height: 44,
-              borderRadius: 'var(--radius-full)',
-              background: 'rgba(59, 130, 246, 0.15)',
-              color: 'var(--accent-primary)',
+              width: 32,
+              height: 32,
+              borderRadius: 'var(--radius-xs)',
+              background: 'rgba(2, 132, 199, 0.1)',
+              border: '1px solid rgba(56, 189, 248, 0.2)',
+              color: 'var(--accent-cyan)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center'
             }}
           >
             {isProcessing ? (
-              <Loader2 size={24} className="animate-spin" />
+              <Loader2 size={16} className="animate-spin" />
             ) : (
-              <UploadCloud size={24} />
+              <Upload size={16} />
             )}
           </div>
 
           <div>
-            <div style={{ fontWeight: 600, fontSize: 14, color: 'var(--text-primary)' }}>
-              {isProcessing ? 'Parsing Spatial File...' : 'Drop your spatial file here'}
+            <div style={{ fontWeight: 600, fontSize: 12, color: 'var(--text-primary)' }}>
+              {isProcessing ? 'Parsing Spatial Topology...' : 'Ingest Spatial Dataset'}
             </div>
-            <div style={{ fontSize: 12, color: 'var(--text-muted)', marginTop: 4 }}>
-              or click to browse from your computer
+            <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2 }}>
+              Drag & drop layers or click to browse
             </div>
           </div>
 
           <div
             style={{
               display: 'flex',
-              gap: 6,
-              marginTop: 4,
+              gap: 4,
+              marginTop: 2,
               flexWrap: 'wrap',
               justifyContent: 'center'
             }}
           >
-            <span className="badge badge-info">GeoJSON (.json)</span>
-            <span className="badge badge-info">Shapefile (.zip)</span>
-            <span className="badge badge-info">Coordinate CSV</span>
+            <span className="badge badge-info">GEOJSON</span>
+            <span className="badge badge-info">SHP (.ZIP)</span>
+            <span className="badge badge-info">CSV (LAT/LON)</span>
           </div>
         </div>
       </div>
@@ -153,33 +154,38 @@ export const FileDropzone: FC = () => {
       {errorMessage && (
         <div
           style={{
-            marginTop: 12,
-            padding: '10px 12px',
-            background: 'rgba(244, 63, 94, 0.12)',
-            border: '1px solid rgba(244, 63, 94, 0.3)',
-            borderRadius: 'var(--radius-sm)',
+            marginTop: 8,
+            padding: '8px 10px',
+            background: 'rgba(244, 63, 94, 0.08)',
+            border: '1px solid rgba(244, 63, 94, 0.25)',
+            borderRadius: 'var(--radius-xs)',
             color: '#fb7185',
-            fontSize: 12,
+            fontSize: 11,
             display: 'flex',
             alignItems: 'flex-start',
-            gap: 8
+            gap: 6
           }}
         >
-          <AlertTriangle size={16} style={{ flexShrink: 0, marginTop: 2 }} />
-          <div>{errorMessage}</div>
+          <AlertTriangle size={14} style={{ flexShrink: 0, marginTop: 1 }} />
+          <div style={{ lineHeight: 1.3 }}>{errorMessage}</div>
         </div>
       )}
 
-      {/* Privacy Notice */}
+      {/* Security & Client-Side Notice */}
       <div
         style={{
-          marginTop: 10,
-          fontSize: 11,
+          marginTop: 8,
+          fontSize: 10,
           color: 'var(--text-muted)',
-          textAlign: 'center'
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 4,
+          fontFamily: 'var(--font-mono)'
         }}
       >
-        🔒 100% Client-Side. Files are processed locally and never leave your device.
+        <Shield size={11} style={{ opacity: 0.7 }} />
+        <span>100% Client-Side Ingestion • Zero Data Leakage</span>
       </div>
     </div>
   );

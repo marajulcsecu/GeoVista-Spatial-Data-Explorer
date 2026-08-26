@@ -4,9 +4,7 @@ import {
   ArrowUpDown,
   Search,
   Download,
-  Maximize2,
-  Table as TableIcon,
-  Filter
+  Table as TableIcon
 } from 'lucide-react';
 import { useAppStore } from '../../app/store';
 import { formatValueForDisplay } from '../../utils/sanitization';
@@ -126,34 +124,34 @@ export const AttributeTable: FC = () => {
       {/* Table Toolbar */}
       <div
         style={{
-          padding: '8px 16px',
-          background: 'var(--bg-surface-elevated)',
+          padding: '6px 14px',
+          background: 'var(--bg-surface)',
           borderBottom: '1px solid var(--border-color)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
           flexWrap: 'wrap',
-          gap: 8
+          gap: 6
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <TableIcon size={16} style={{ color: 'var(--accent-primary)' }} />
-          <span style={{ fontSize: 13, fontWeight: 600 }}>
-            Attribute Table: {activeDataset.name}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <TableIcon size={14} style={{ color: 'var(--accent-cyan)' }} />
+          <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-primary)' }}>
+            ATTRIBUTE DATA GRID: <span style={{ color: 'var(--text-muted)' }}>{activeDataset.name}</span>
           </span>
-          <span className="badge badge-info" style={{ fontSize: 11 }}>
-            {processedRows.length} of {features.length} records
+          <span className="badge badge-info" style={{ fontSize: 9 }}>
+            {processedRows.length} / {features.length} RECORDS
           </span>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
           {/* Quick Filter */}
           <div style={{ position: 'relative' }}>
             <Search
-              size={13}
+              size={12}
               style={{
                 position: 'absolute',
-                left: 8,
+                left: 7,
                 top: '50%',
                 transform: 'translateY(-50%)',
                 color: 'var(--text-muted)'
@@ -161,15 +159,15 @@ export const AttributeTable: FC = () => {
             />
             <input
               type="text"
-              placeholder="Filter table rows..."
+              placeholder="Search table values..."
               value={filterText}
               onChange={(e) => setFilterText(e.target.value)}
               style={{
-                fontSize: 12,
-                paddingLeft: 26,
-                paddingRight: 8,
-                height: 28,
-                width: 180
+                fontSize: 11,
+                paddingLeft: 24,
+                paddingRight: 6,
+                height: 24,
+                width: 170
               }}
             />
           </div>
@@ -178,10 +176,10 @@ export const AttributeTable: FC = () => {
           <button
             onClick={() => exportDatasetToCSV(activeDataset)}
             className="btn-ghost"
-            style={{ fontSize: 12, padding: '4px 8px' }}
+            style={{ fontSize: 11, padding: '2px 6px', height: 24 }}
             title="Download CSV"
           >
-            <Download size={14} />
+            <Download size={12} />
             <span>Export CSV</span>
           </button>
 
@@ -189,34 +187,35 @@ export const AttributeTable: FC = () => {
           <button
             onClick={() => setAttributeTableOpen(false)}
             className="btn-icon"
-            style={{ width: 26, height: 26 }}
+            style={{ width: 24, height: 24 }}
             title="Close Table"
           >
-            <X size={14} />
+            <X size={13} />
           </button>
         </div>
       </div>
 
       {/* Grid Container */}
       <div style={{ flex: 1, overflow: 'auto', background: 'var(--bg-app)' }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 11 }}>
           <thead
             style={{
               position: 'sticky',
               top: 0,
               background: 'var(--bg-surface)',
               zIndex: 5,
-              boxShadow: '0 1px 2px rgba(0,0,0,0.2)'
+              boxShadow: '0 1px 2px rgba(0,0,0,0.3)'
             }}
           >
             <tr>
               <th
                 style={{
-                  padding: '8px 12px',
+                  padding: '6px 10px',
                   borderBottom: '1px solid var(--border-color)',
                   color: 'var(--text-muted)',
-                  width: 40,
-                  textAlign: 'center'
+                  width: 36,
+                  textAlign: 'center',
+                  fontFamily: 'var(--font-mono)'
                 }}
               >
                 #
@@ -226,19 +225,20 @@ export const AttributeTable: FC = () => {
                   key={col}
                   onClick={() => handleSort(col)}
                   style={{
-                    padding: '8px 12px',
+                    padding: '6px 10px',
                     borderBottom: '1px solid var(--border-color)',
                     color: sortField === col ? 'var(--accent-cyan)' : 'var(--text-secondary)',
                     fontWeight: 600,
                     textAlign: 'left',
                     cursor: 'pointer',
                     userSelect: 'none',
-                    whiteSpace: 'nowrap'
+                    whiteSpace: 'nowrap',
+                    fontFamily: 'var(--font-mono)'
                   }}
                 >
                   <div style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
                     <span>{col}</span>
-                    <ArrowUpDown size={12} style={{ opacity: sortField === col ? 1 : 0.4 }} />
+                    <ArrowUpDown size={10} style={{ opacity: sortField === col ? 1 : 0.3 }} />
                   </div>
                 </th>
               ))}
@@ -257,11 +257,11 @@ export const AttributeTable: FC = () => {
                   onClick={() => handleRowClick(feat)}
                   style={{
                     background: isSelected
-                      ? 'rgba(59, 130, 246, 0.22)'
+                      ? 'rgba(56, 189, 248, 0.15)'
                       : idx % 2 === 0
                       ? 'transparent'
                       : 'var(--bg-surface)',
-                    borderBottom: '1px solid var(--border-color)',
+                    borderBottom: '1px solid var(--border-subtle)',
                     cursor: 'pointer',
                     transition: 'var(--transition-fast)'
                   }}
@@ -277,7 +277,7 @@ export const AttributeTable: FC = () => {
                 >
                   <td
                     style={{
-                      padding: '6px 12px',
+                      padding: '5px 10px',
                       color: 'var(--text-muted)',
                       textAlign: 'center',
                       fontFamily: 'var(--font-mono)'
@@ -289,10 +289,10 @@ export const AttributeTable: FC = () => {
                     <td
                       key={col}
                       style={{
-                        padding: '6px 12px',
+                        padding: '5px 10px',
                         color: 'var(--text-primary)',
                         whiteSpace: 'nowrap',
-                        maxWidth: 260,
+                        maxWidth: 240,
                         overflow: 'hidden',
                         textOverflow: 'ellipsis'
                       }}
