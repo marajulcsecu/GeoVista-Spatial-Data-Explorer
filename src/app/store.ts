@@ -4,6 +4,8 @@ import type {
   CsvColumnMapping,
   LayerStyleConfig,
   MeasurementState,
+  DistanceUnit,
+  AreaUnit,
   NormalizedFeature,
   SelectedFeatureRef,
   SpatialDataset
@@ -87,8 +89,10 @@ export interface AppState {
   setActiveTool: (tool: 'select' | 'measure-distance' | 'measure-area' | 'fly-to') => void;
   startMeasurement: (mode: 'distance' | 'area') => void;
   addMeasurementPoint: (pt: [number, number]) => void;
+  undoMeasurementPoint: () => void;
   finishMeasurement: () => void;
   clearMeasurement: () => void;
+  setMeasurementUnits: (units: { distanceUnit?: DistanceUnit; areaUnit?: AreaUnit }) => void;
 
   setCategoryVisibility: (category: string, visible: boolean) => void;
   toggleAllCategories: (visible: boolean) => void;
@@ -282,13 +286,44 @@ export const useAppStore = create<AppState>((set, get) => ({
         }
       });
     } else if (current.mode === 'area') {
-      const { area, perimeter } = calculatePolygonAreaAndPerimeter(newPoints);
+      const { area, perimeter, segments } = calculatePolygonAreaAndPerimeter(newPoints);
       set({
         measurementState: {
           ...current,
           points: newPoints,
           totalAreaSquareMeters: area,
-          perimeterMeters: perimeter
+          perimeterMeters: perimeter,
+          segments
+        }
+      });
+    }
+  },
+
+  undoMeasurementPoint: () => {
+    const current = get().measurementState;
+    if (current.points.length === 0) return;
+    const newPoints = current.points.slice(0, -1);
+    if (current.mode === 'distance') {
+      const { total, segments } = calculatePolylineDistance(newPoints);
+      set({
+        measurementState: {
+          ...current,
+          points: newPoints,
+          totalDistanceMeters: total,
+          segments,
+          isFinished: false
+        }
+      });
+    } else if (current.mode === 'area') {
+      const { area, perimeter, segments } = calculatePolygonAreaAndPerimeter(newPoints);
+      set({
+        measurementState: {
+          ...current,
+          points: newPoints,
+          totalAreaSquareMeters: area,
+          perimeterMeters: perimeter,
+          segments,
+          isFinished: false
         }
       });
     }
@@ -309,6 +344,16 @@ export const useAppStore = create<AppState>((set, get) => ({
       activeTool: 'select',
       measurementState: { ...INITIAL_MEASUREMENT_STATE }
     });
+  },
+
+  setMeasurementUnits: ({ distanceUnit, areaUnit }) => {
+    set((state) => ({
+      measurementState: {
+        ...state.measurementState,
+        distanceUnit: distanceUnit ?? state.measurementState.distanceUnit,
+        areaUnit: areaUnit ?? state.measurementState.areaUnit
+      }
+    }));
   },
 
   setCategoryVisibility: (category, visible) => {

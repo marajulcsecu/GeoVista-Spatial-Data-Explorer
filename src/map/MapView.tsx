@@ -4,8 +4,8 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 import { useAppStore } from '../app/store';
 import { getBasemapStyle } from './mapStyles';
 import { createDatasetLayerSpecs } from './mapLayers';
-import { formatDistance, formatArea } from './measurements';
 import { ScaleWidget } from '../components/tools/ScaleWidget';
+import { MeasurementOverlay } from '../components/tools/MeasurementOverlay';
 import type { SpatialDataset, SelectedFeatureRef } from '../types/spatial';
 
 export const MapView: FC = () => {
@@ -26,7 +26,9 @@ export const MapView: FC = () => {
     setCursorCoordinates,
     setMapViewport,
     addMeasurementPoint,
-    finishMeasurement
+    undoMeasurementPoint,
+    finishMeasurement,
+    clearMeasurement
   } = useAppStore();
 
   // Keep a mutable ref of all reactive layer props so map event handlers always have fresh data
@@ -299,6 +301,25 @@ export const MapView: FC = () => {
     });
   }, [flyToTrigger]);
 
+  // Measurement keyboard shortcuts (Ctrl+Z to undo, Enter to finish, Esc to clear)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (activeTool !== 'measure-distance' && activeTool !== 'measure-area') return;
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') {
+        e.preventDefault();
+        undoMeasurementPoint();
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        finishMeasurement();
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        clearMeasurement();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [activeTool, undoMeasurementPoint, finishMeasurement, clearMeasurement]);
+
   return (
     <div
       ref={mapContainerRef}
@@ -311,59 +332,8 @@ export const MapView: FC = () => {
       {/* Precision Cartographic Scale Suite (Representative Fraction & Dual Unit Bar) */}
       <ScaleWidget />
 
-      {/* Live Measurement Floating Overlay */}
-      {measurementState.mode !== 'none' && measurementState.points.length > 0 && (
-        <div
-          style={{
-            position: 'absolute',
-            top: 16,
-            left: '50%',
-            transform: 'translateX(-50%)',
-            zIndex: 10,
-            background: 'var(--bg-surface-translucent)',
-            backdropFilter: 'blur(12px)',
-            border: '1px solid var(--border-color)',
-            boxShadow: 'var(--shadow-lg)',
-            padding: '10px 18px',
-            borderRadius: 'var(--radius-md)',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 16,
-            fontSize: 13,
-            fontWeight: 500
-          }}
-        >
-          <div>
-            <span style={{ color: 'var(--text-secondary)' }}>
-              {measurementState.mode === 'distance' ? 'Total Distance: ' : 'Enclosed Area: '}
-            </span>
-            <strong style={{ color: 'var(--accent-cyan)', fontSize: 15, marginLeft: 4 }}>
-              {measurementState.mode === 'distance'
-                ? formatDistance(measurementState.totalDistanceMeters)
-                : formatArea(measurementState.totalAreaSquareMeters)}
-            </strong>
-            {measurementState.mode === 'area' && (
-              <span style={{ color: 'var(--text-secondary)', marginLeft: 10 }}>
-                (Perimeter: {formatDistance(measurementState.perimeterMeters)})
-              </span>
-            )}
-          </div>
-          {!measurementState.isFinished && (
-            <button
-              onClick={() => finishMeasurement()}
-              className="btn-primary"
-              style={{ padding: '4px 10px', fontSize: 12 }}
-            >
-              Finish
-            </button>
-          )}
-          <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>
-            {measurementState.isFinished
-              ? 'Measurement finished'
-              : 'Click map to add points, double-click to finish'}
-          </span>
-        </div>
-      )}
+      {/* Advanced Geodesic Measurement Workstation Overlay */}
+      <MeasurementOverlay />
     </div>
   );
 };
@@ -384,22 +354,36 @@ function syncMeasurementLayers(map: Map, state: any) {
     }))
   };
 
+  const isArea = state.mode === 'area';
+  const shouldClosePolygon = isArea && points.length >= 3;
+  const polygonCoords = shouldClosePolygon ? [...points, points[0]] : points;
+
+  const lineFeatures: any[] = [];
+  if (points.length >= 2) {
+    lineFeatures.push({
+      type: 'Feature',
+      geometry: {
+        type: 'LineString',
+        coordinates: polygonCoords
+      },
+      properties: {}
+    });
+
+    if (shouldClosePolygon) {
+      lineFeatures.push({
+        type: 'Feature',
+        geometry: {
+          type: 'Polygon',
+          coordinates: [polygonCoords]
+        },
+        properties: {}
+      });
+    }
+  }
+
   const lineGeoJSON: any = {
     type: 'FeatureCollection',
-    features:
-      points.length >= 2
-        ? [
-            {
-              type: 'Feature',
-              geometry: {
-                type: state.mode === 'area' && state.isFinished ? 'Polygon' : 'LineString',
-                coordinates:
-                  state.mode === 'area' && state.isFinished ? [[...points, points[0]]] : points
-              },
-              properties: {}
-            }
-          ]
-        : []
+    features: lineFeatures
   };
 
   const lineSourceId = 'source_measurement_lines';
@@ -430,7 +414,7 @@ function syncMeasurementLayers(map: Map, state: any) {
     (map.getSource(lineSourceId) as GeoJSONSource).setData(lineGeoJSON);
   }
 
-  // Fill layer for Area measurement
+  // Fill layer for Area measurement (live rendered)
   if (!map.getLayer('layer_measure_fill')) {
     try {
       map.addLayer({
@@ -440,7 +424,7 @@ function syncMeasurementLayers(map: Map, state: any) {
         filter: ['==', ['geometry-type'], 'Polygon'],
         paint: {
           'fill-color': '#06b6d4',
-          'fill-opacity': 0.2
+          'fill-opacity': 0.22
         }
       });
     } catch {
@@ -448,17 +432,37 @@ function syncMeasurementLayers(map: Map, state: any) {
     }
   }
 
-  // Line layer
+  // Dark outline casing for crisp contrast & no flickering
+  if (!map.getLayer('layer_measure_line_casing')) {
+    try {
+      map.addLayer({
+        id: 'layer_measure_line_casing',
+        type: 'line',
+        source: lineSourceId,
+        filter: ['==', ['geometry-type'], 'LineString'],
+        paint: {
+          'line-color': '#030712',
+          'line-width': 5,
+          'line-opacity': 0.85
+        }
+      });
+    } catch {
+      // Layer add in progress
+    }
+  }
+
+  // Core Solid Measurement Line (No Dasharray -> Zero Blinking)
   if (!map.getLayer('layer_measure_line')) {
     try {
       map.addLayer({
         id: 'layer_measure_line',
         type: 'line',
         source: lineSourceId,
+        filter: ['==', ['geometry-type'], 'LineString'],
         paint: {
-          'line-color': '#06b6d4',
+          'line-color': '#38bdf8',
           'line-width': 2.5,
-          'line-dasharray': [2, 2]
+          'line-opacity': 1
         }
       });
     } catch {
@@ -466,7 +470,7 @@ function syncMeasurementLayers(map: Map, state: any) {
     }
   }
 
-  // Points layer
+  // Vertex Points layer with stylized start vs intermediate markers
   if (!map.getLayer('layer_measure_points')) {
     try {
       map.addLayer({
@@ -474,8 +478,8 @@ function syncMeasurementLayers(map: Map, state: any) {
         type: 'circle',
         source: sourceId,
         paint: {
-          'circle-radius': 5,
-          'circle-color': '#06b6d4',
+          'circle-radius': ['case', ['==', ['get', 'index'], 1], 7, 5.5],
+          'circle-color': ['case', ['==', ['get', 'index'], 1], '#10b981', '#38bdf8'],
           'circle-stroke-width': 2,
           'circle-stroke-color': '#ffffff'
         }

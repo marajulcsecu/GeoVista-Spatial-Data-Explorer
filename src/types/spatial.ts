@@ -110,6 +110,9 @@ export interface CsvColumnMapping {
   descriptionField?: string;
 }
 
+export type DistanceUnit = 'auto' | 'm' | 'km' | 'ft' | 'mi' | 'yd' | 'nm';
+export type AreaUnit = 'auto' | 'sqm' | 'ha' | 'acre' | 'sqkm' | 'sqft' | 'sqmi' | 'bigha';
+
 export interface MeasurementState {
   mode: 'none' | 'distance' | 'area';
   points: [number, number][]; // [lng, lat]
@@ -118,4 +121,6 @@ export interface MeasurementState {
   perimeterMeters: number;
   segments: number[]; // individual segment lengths in meters
   isFinished: boolean;
+  distanceUnit: DistanceUnit;
+  areaUnit: AreaUnit;
 }
