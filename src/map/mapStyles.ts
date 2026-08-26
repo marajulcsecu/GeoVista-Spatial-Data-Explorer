@@ -38,28 +38,88 @@ export const BASEMAP_OPTIONS: BasemapOption[] = [
     }
   },
   {
-    key: 'esri-topo',
-    label: 'Topographic Map',
-    thumbnail: '🏔️',
+    key: 'esri-hybrid',
+    label: 'Satellite (Roads & Labels)',
+    thumbnail: '🌍',
     style: {
       version: 8,
       sources: {
-        'esri-topo-source': {
+        'satellite-base': {
           type: 'raster',
           tiles: [
-            'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}'
+            'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
           ],
           tileSize: 256,
-          maxzoom: 15,
-          attribution:
-            'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community'
+          maxzoom: 18,
+          attribution: 'Tiles &copy; Esri'
+        },
+        'reference-roads': {
+          type: 'raster',
+          tiles: [
+            'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}'
+          ],
+          tileSize: 256,
+          maxzoom: 18
+        },
+        'reference-labels': {
+          type: 'raster',
+          tiles: [
+            'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}'
+          ],
+          tileSize: 256,
+          maxzoom: 18
         }
       },
       layers: [
         {
-          id: 'esri-topo-tiles',
+          id: 'satellite-base-layer',
           type: 'raster',
-          source: 'esri-topo-source',
+          source: 'satellite-base',
+          minzoom: 0,
+          maxzoom: 22
+        },
+        {
+          id: 'reference-roads-layer',
+          type: 'raster',
+          source: 'reference-roads',
+          minzoom: 0,
+          maxzoom: 22
+        },
+        {
+          id: 'reference-labels-layer',
+          type: 'raster',
+          source: 'reference-labels',
+          minzoom: 0,
+          maxzoom: 22
+        }
+      ]
+    }
+  },
+  {
+    key: 'open-topo',
+    label: 'OpenTopoMap (Elevation Contours)',
+    thumbnail: '🏔️',
+    style: {
+      version: 8,
+      sources: {
+        'opentopo-source': {
+          type: 'raster',
+          tiles: [
+            'https://a.tile.opentopomap.org/{z}/{x}/{y}.png',
+            'https://b.tile.opentopomap.org/{z}/{x}/{y}.png',
+            'https://c.tile.opentopomap.org/{z}/{x}/{y}.png'
+          ],
+          tileSize: 256,
+          maxzoom: 17,
+          attribution:
+            'Map data: &copy; OpenStreetMap contributors, SRTM | Map style: &copy; OpenTopoMap (CC-BY-SA)'
+        }
+      },
+      layers: [
+        {
+          id: 'opentopo-layer',
+          type: 'raster',
+          source: 'opentopo-source',
           minzoom: 0,
           maxzoom: 22
         }
@@ -68,7 +128,7 @@ export const BASEMAP_OPTIONS: BasemapOption[] = [
   },
   {
     key: 'osm-standard',
-    label: 'OpenStreetMap',
+    label: 'OpenStreetMap Standard',
     thumbnail: '🗺️',
     style: {
       version: 8,
@@ -94,28 +154,30 @@ export const BASEMAP_OPTIONS: BasemapOption[] = [
     }
   },
   {
-    key: 'esri-natgeo',
-    label: 'National Geographic',
-    thumbnail: '🧭',
+    key: 'cyclosm',
+    label: 'CyclOSM (Outdoor & Topo)',
+    thumbnail: '🌲',
     style: {
       version: 8,
       sources: {
-        'esri-natgeo-source': {
+        'cyclosm-source': {
           type: 'raster',
           tiles: [
-            'https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}'
+            'https://a.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png',
+            'https://b.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png',
+            'https://c.tile-cyclosm.openstreetmap.fr/cyclosm/{z}/{x}/{y}.png'
           ],
           tileSize: 256,
-          maxzoom: 12,
+          maxzoom: 18,
           attribution:
-            'Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC'
+            '&copy; <a href="https://www.cyclosm.org">CyclOSM</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }
       },
       layers: [
         {
-          id: 'esri-natgeo-tiles',
+          id: 'cyclosm-layer',
           type: 'raster',
-          source: 'esri-natgeo-source',
+          source: 'cyclosm-source',
           minzoom: 0,
           maxzoom: 22
         }
@@ -123,22 +185,39 @@ export const BASEMAP_OPTIONS: BasemapOption[] = [
     }
   },
   {
-    key: 'osm',
-    label: 'Voyager (Streets)',
+    key: 'esri-street',
+    label: 'ESRI World Street Map',
     thumbnail: '🏙️',
-    style: 'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json'
+    style: {
+      version: 8,
+      sources: {
+        'esri-street-source': {
+          type: 'raster',
+          tiles: [
+            'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}'
+          ],
+          tileSize: 256,
+          maxzoom: 18,
+          attribution:
+            'Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community'
+        }
+      },
+      layers: [
+        {
+          id: 'esri-street-layer',
+          type: 'raster',
+          source: 'esri-street-source',
+          minzoom: 0,
+          maxzoom: 22
+        }
+      ]
+    }
   },
   {
     key: 'carto-dark',
-    label: 'Dark Matter',
+    label: 'Dark Matter (GIS Analysis)',
     thumbnail: '🌙',
     style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json'
-  },
-  {
-    key: 'carto-light',
-    label: 'Positron (Light)',
-    thumbnail: '☀️',
-    style: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json'
   }
 ];
 

@@ -338,9 +338,7 @@ export const useAppStore = create<AppState>((set, get) => ({
     const currentBasemap = get().basemapStyle;
     let nextBasemap = currentBasemap;
     if (theme === 'light' && currentBasemap === 'carto-dark') {
-      nextBasemap = 'carto-light';
-    } else if (theme === 'dark' && currentBasemap === 'carto-light') {
-      nextBasemap = 'carto-dark';
+      nextBasemap = 'osm-standard';
     }
     set({ theme, basemapStyle: nextBasemap });
   },

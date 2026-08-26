@@ -95,12 +95,12 @@ export interface SelectedFeatureRef {
 
 export type BasemapKey =
   | 'esri-satellite'
-  | 'esri-topo'
+  | 'esri-hybrid'
+  | 'open-topo'
   | 'osm-standard'
-  | 'esri-natgeo'
-  | 'osm'
-  | 'carto-dark'
-  | 'carto-light';
+  | 'cyclosm'
+  | 'esri-street'
+  | 'carto-dark';
 
 export interface CsvColumnMapping {
   longitudeField: string;

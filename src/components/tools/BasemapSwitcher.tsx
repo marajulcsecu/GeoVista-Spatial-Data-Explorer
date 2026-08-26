@@ -48,7 +48,7 @@ export const BasemapSwitcher: FC = () => {
             position: 'absolute',
             bottom: 'calc(100% + 5px)',
             right: 0,
-            width: 190,
+            width: 240,
             padding: 4,
             zIndex: 30,
             display: 'flex',
