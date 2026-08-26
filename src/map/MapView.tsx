@@ -190,7 +190,7 @@ export const MapView: FC = () => {
       setMapViewport(map.getZoom(), { lng: map.getCenter().lng, lat: map.getCenter().lat });
     };
 
-    // Automatic re-sync whenever style loads, changes, or becomes idle
+    // Automatic re-sync whenever style loads or changes
     const handleStyleUpdate = () => {
       syncLayersToMap();
       handleViewportUpdate();
@@ -198,7 +198,6 @@ export const MapView: FC = () => {
 
     map.on('load', handleStyleUpdate);
     map.on('styledata', handleStyleUpdate);
-    map.on('idle', handleStyleUpdate);
     map.on('move', handleViewportUpdate);
 
     // Unified click handler for measurement and feature selection
@@ -238,8 +237,43 @@ export const MapView: FC = () => {
       });
 
       const state = stateRef.current;
-      if (state.activeTool === 'measure-distance' || state.activeTool === 'measure-area') {
+      const isMeasureTool = state.activeTool === 'measure-distance' || state.activeTool === 'measure-area';
+
+      if (isMeasureTool) {
         map.getCanvas().style.cursor = 'crosshair';
+
+        // Update live smooth rubberband line to cursor
+        const rSource = map.getSource('source_measurement_rubberband') as GeoJSONSource | undefined;
+        if (rSource && state.measurementState.points.length >= 1 && !state.measurementState.isFinished) {
+          const lastPt = state.measurementState.points[state.measurementState.points.length - 1];
+          const curPt: [number, number] = [e.lngLat.lng, e.lngLat.lat];
+          const rFeatures: any[] = [
+            {
+              type: 'Feature',
+              geometry: {
+                type: 'LineString',
+                coordinates: [lastPt, curPt]
+              },
+              properties: {}
+            }
+          ];
+
+          if (state.activeTool === 'measure-area' && state.measurementState.points.length >= 2) {
+            rFeatures.push({
+              type: 'Feature',
+              geometry: {
+                type: 'LineString',
+                coordinates: [curPt, state.measurementState.points[0]]
+              },
+              properties: {}
+            });
+          }
+
+          rSource.setData({
+            type: 'FeatureCollection',
+            features: rFeatures
+          });
+        }
         return;
       }
 
@@ -258,6 +292,10 @@ export const MapView: FC = () => {
 
     map.on('mouseout', () => {
       setCursorCoordinates(null);
+      const rSource = map.getSource('source_measurement_rubberband') as GeoJSONSource | undefined;
+      if (rSource) {
+        rSource.setData({ type: 'FeatureCollection', features: [] });
+      }
     });
 
     map.on('dblclick', (e) => {
@@ -440,6 +478,10 @@ function syncMeasurementLayers(map: Map, state: any) {
         type: 'line',
         source: lineSourceId,
         filter: ['==', ['geometry-type'], 'LineString'],
+        layout: {
+          'line-join': 'round',
+          'line-cap': 'round'
+        },
         paint: {
           'line-color': '#030712',
           'line-width': 5,
@@ -451,7 +493,7 @@ function syncMeasurementLayers(map: Map, state: any) {
     }
   }
 
-  // Core Solid Measurement Line (No Dasharray -> Zero Blinking)
+  // Core Solid Measurement Line (Round caps/joins -> Ultra Smooth & Zero Blinking)
   if (!map.getLayer('layer_measure_line')) {
     try {
       map.addLayer({
@@ -459,10 +501,69 @@ function syncMeasurementLayers(map: Map, state: any) {
         type: 'line',
         source: lineSourceId,
         filter: ['==', ['geometry-type'], 'LineString'],
+        layout: {
+          'line-join': 'round',
+          'line-cap': 'round'
+        },
         paint: {
           'line-color': '#38bdf8',
           'line-width': 2.5,
           'line-opacity': 1
+        }
+      });
+    } catch {
+      // Layer add in progress
+    }
+  }
+
+  // Rubberband dynamic preview source & layers
+  const rubberbandSourceId = 'source_measurement_rubberband';
+  if (!map.getSource(rubberbandSourceId)) {
+    try {
+      map.addSource(rubberbandSourceId, {
+        type: 'geojson',
+        data: { type: 'FeatureCollection', features: [] }
+      });
+    } catch {
+      // Source add in progress
+    }
+  }
+
+  if (!map.getLayer('layer_measure_rubberband_casing')) {
+    try {
+      map.addLayer({
+        id: 'layer_measure_rubberband_casing',
+        type: 'line',
+        source: rubberbandSourceId,
+        layout: {
+          'line-join': 'round',
+          'line-cap': 'round'
+        },
+        paint: {
+          'line-color': '#030712',
+          'line-width': 4.5,
+          'line-opacity': 0.75
+        }
+      });
+    } catch {
+      // Layer add in progress
+    }
+  }
+
+  if (!map.getLayer('layer_measure_rubberband')) {
+    try {
+      map.addLayer({
+        id: 'layer_measure_rubberband',
+        type: 'line',
+        source: rubberbandSourceId,
+        layout: {
+          'line-join': 'round',
+          'line-cap': 'round'
+        },
+        paint: {
+          'line-color': '#38bdf8',
+          'line-width': 2,
+          'line-opacity': 0.85
         }
       });
     } catch {
