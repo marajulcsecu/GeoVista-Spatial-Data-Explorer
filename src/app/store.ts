@@ -127,7 +127,7 @@ export const useAppStore = create<AppState>((set, get) => ({
   activeTool: 'select',
   measurementState: { ...INITIAL_MEASUREMENT_STATE },
 
-  basemapStyle: 'esri-satellite',
+  basemapStyle: 'google-satellite',
   theme: getInitialTheme(),
   categoryFilter: {},
   searchQuery: '',

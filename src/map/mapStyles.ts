@@ -9,9 +9,71 @@ export interface BasemapOption {
 
 export const BASEMAP_OPTIONS: BasemapOption[] = [
   {
-    key: 'esri-satellite',
-    label: 'Satellite Imagery',
+    key: 'google-satellite',
+    label: 'Google Satellite (Latest)',
     thumbnail: '🛰️',
+    style: {
+      version: 8,
+      sources: {
+        'google-satellite-source': {
+          type: 'raster',
+          tiles: [
+            'https://mt0.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
+            'https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
+            'https://mt2.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',
+            'https://mt3.google.com/vt/lyrs=s&x={x}&y={y}&z={z}'
+          ],
+          tileSize: 256,
+          maxzoom: 21,
+          attribution: '&copy; Google Maps Satellite'
+        }
+      },
+      layers: [
+        {
+          id: 'google-satellite-tiles',
+          type: 'raster',
+          source: 'google-satellite-source',
+          minzoom: 0,
+          maxzoom: 22
+        }
+      ]
+    }
+  },
+  {
+    key: 'google-hybrid',
+    label: 'Google Hybrid (Roads & Labels)',
+    thumbnail: '🌍',
+    style: {
+      version: 8,
+      sources: {
+        'google-hybrid-source': {
+          type: 'raster',
+          tiles: [
+            'https://mt0.google.com/vt/lyrs=y&x={x}&y={y}&z={z}',
+            'https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}',
+            'https://mt2.google.com/vt/lyrs=y&x={x}&y={y}&z={z}',
+            'https://mt3.google.com/vt/lyrs=y&x={x}&y={y}&z={z}'
+          ],
+          tileSize: 256,
+          maxzoom: 21,
+          attribution: '&copy; Google Maps Imagery'
+        }
+      },
+      layers: [
+        {
+          id: 'google-hybrid-tiles',
+          type: 'raster',
+          source: 'google-hybrid-source',
+          minzoom: 0,
+          maxzoom: 22
+        }
+      ]
+    }
+  },
+  {
+    key: 'esri-satellite',
+    label: 'Esri World Imagery',
+    thumbnail: '📡',
     style: {
       version: 8,
       sources: {
@@ -31,64 +93,6 @@ export const BASEMAP_OPTIONS: BasemapOption[] = [
           id: 'esri-satellite-tiles',
           type: 'raster',
           source: 'esri-satellite-source',
-          minzoom: 0,
-          maxzoom: 22
-        }
-      ]
-    }
-  },
-  {
-    key: 'esri-hybrid',
-    label: 'Satellite (Roads & Labels)',
-    thumbnail: '🌍',
-    style: {
-      version: 8,
-      sources: {
-        'satellite-base': {
-          type: 'raster',
-          tiles: [
-            'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
-          ],
-          tileSize: 256,
-          maxzoom: 18,
-          attribution: 'Tiles &copy; Esri'
-        },
-        'reference-roads': {
-          type: 'raster',
-          tiles: [
-            'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}'
-          ],
-          tileSize: 256,
-          maxzoom: 18
-        },
-        'reference-labels': {
-          type: 'raster',
-          tiles: [
-            'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}'
-          ],
-          tileSize: 256,
-          maxzoom: 18
-        }
-      },
-      layers: [
-        {
-          id: 'satellite-base-layer',
-          type: 'raster',
-          source: 'satellite-base',
-          minzoom: 0,
-          maxzoom: 22
-        },
-        {
-          id: 'reference-roads-layer',
-          type: 'raster',
-          source: 'reference-roads',
-          minzoom: 0,
-          maxzoom: 22
-        },
-        {
-          id: 'reference-labels-layer',
-          type: 'raster',
-          source: 'reference-labels',
           minzoom: 0,
           maxzoom: 22
         }

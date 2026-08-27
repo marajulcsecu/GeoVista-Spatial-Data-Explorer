@@ -94,8 +94,9 @@ export interface SelectedFeatureRef {
 }
 
 export type BasemapKey =
+  | 'google-satellite'
+  | 'google-hybrid'
   | 'esri-satellite'
-  | 'esri-hybrid'
   | 'open-topo'
   | 'osm-standard'
   | 'cyclosm'
